@@ -1,0 +1,8 @@
+@use "@material/card";
+
+@include card.core-styles;
+
+.connect {
+    display: flex;
+    justify-content: flex-end;
+}

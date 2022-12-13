@@ -1,0 +1,7 @@
+// div {
+//     border: 4px, solid, green;
+// }
+
+@use "@material/card";
+
+@include card.core-styles;
