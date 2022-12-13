@@ -1,11 +1,10 @@
 <div class="container">
-    <h3>Mint tokens</h3>
-
-    <button (click)="fetchMint()">Fecth mint</button>
-
     <mat-form-field appearance="fill">
         <mat-label>Select token</mat-label>
-        <mat-select>
+        <mat-select
+            [(ngModel)]="selectedToken"
+            (valueChange)="onSelectedTokenChange($event)"
+        >
             <mat-option *ngFor="let token of tokenContracts" [value]="token">
                 {{ token.name }}
             </mat-option>
@@ -14,10 +13,17 @@
     <form class="example-form">
         <mat-form-field appearance="fill">
             <mat-label>Token amount</mat-label>
-            <input matInput placeholder="Ex. Pizza" value="Token amount" />
+            <input
+                matInput
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="selectedAmount"
+                placeholder="1000"
+                value=""
+                (keyup)="onSelectedAmountChange()"
+            />
         </mat-form-field>
     </form>
     <button class="item" mat-raised-button color="accent" (click)="clickMint()">
-        Mint
+        Mint <mat-icon>all_inclusive</mat-icon>
     </button>
 </div>

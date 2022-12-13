@@ -1,0 +1,68 @@
+<div class="card-container">
+    <div class="token-container">
+        <mat-form-field appearance="fill">
+            <mat-label>Token A</mat-label>
+            <mat-select
+                [(ngModel)]="selectedTokenA"
+                (valueChange)="onSelectedTokenAChange($event)"
+            >
+                <mat-option
+                    *ngFor="let token of tokenContracts"
+                    [value]="token"
+                >
+                    {{ token.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <form class="example-form">
+            <mat-form-field appearance="fill">
+                <mat-label>Amount</mat-label>
+                <input
+                    matInput
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="selectedAmountA"
+                    placeholder="1000"
+                    value=""
+                    (keyup)="onSelectedAmountAChange()"
+                />
+            </mat-form-field>
+        </form>
+    </div>
+    <div>
+        <mat-icon style="margin-bottom: 0.5rem">arrow_downward</mat-icon>
+    </div>
+
+    <div class="token-container">
+        <mat-form-field appearance="fill">
+            <mat-label>Token B</mat-label>
+            <mat-select
+                [(ngModel)]="selectedTokenB"
+                (valueChange)="onSelectedTokenBChange($event)"
+            >
+                <mat-option
+                    *ngFor="let token of tokenContracts"
+                    [value]="token"
+                >
+                    {{ token.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <form class="example-form">
+            <mat-form-field appearance="fill">
+                <mat-label>Amount</mat-label>
+                <input
+                    matInput
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="selectedAmountB"
+                    placeholder="1000"
+                    value=""
+                    (keyup)="onSelectedAmountBChange()"
+                />
+            </mat-form-field>
+        </form>
+    </div>
+
+    <button class="item" mat-raised-button color="accent" (click)="clickSwap()">
+        Swap <mat-icon>swap_horiz</mat-icon>
+    </button>
+</div>

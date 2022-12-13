@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ethers } from "ethers";
 import { AbiItem } from "web3-utils";
-import { Potato, Apple, LSR } from "../smart-contracts/smart-contract-data";
+import { ISmartContract } from "../smart-contracts/smart-contract-data";
 //import ERC20Potato from "../smart-contracts/ERC20Potato.json";
 import { ConnectService } from "./connect.service";
 
@@ -9,44 +9,10 @@ import { ConnectService } from "./connect.service";
     providedIn: "root",
 })
 export class SmartContractService {
-    public contractPotato: ethers.Contract;
-    public contractApple: ethers.Contract;
-    public contractLSR: ethers.Contract;
-    public tokenContracts: ethers.Contract[] = [];
     constructor(public connectService: ConnectService) {
-        this.fetchSmartContract();
+        //this.fetchSmartContract();
     }
-    public getTokenContracts() {
-        return this.tokenContracts;
-    }
-    public fetchSmartContract() {
-        this.contractPotato = new ethers.Contract(
-            Potato.address,
-            Potato.abi as any,
-            this.connectService.signer
-        );
-        Potato.instance = this.contractPotato;
 
-        this.contractApple = new ethers.Contract(
-            Apple.address,
-            Apple.abi as any,
-            this.connectService.signer
-        );
-        Apple.instance = this.contractApple;
-
-        this.contractLSR = new ethers.Contract(
-            LSR.address,
-            LSR.abi as any,
-            this.connectService.signer
-        );
-        LSR.instance = this.contractLSR;
-        this.tokenContracts = [
-            this.contractPotato,
-            this.contractApple,
-            this.contractLSR,
-        ];
-        //console.log(this.contractPotato.address);
-    }
     public async mintTokens(contract: ethers.Contract, amount: BigInt) {
         //this.fetchSmartContract();
 
@@ -61,5 +27,41 @@ export class SmartContractService {
         return await contract
             .connect(this.connectService.signer)
             .balanceOf(await this.connectService.getSignerAddress());
+    }
+    public async getSignerBalance() {
+        return ethers.utils.formatEther(
+            await this.connectService.signer.getBalance()
+        );
+    }
+    public async addLiquidity(
+        contractA: ISmartContract,
+        contractB: ISmartContract,
+        amountA: BigInt,
+        amountB: BigInt
+    ) {
+        await contractA.instance
+            .connect(this.connectService.signer)
+            .approve(
+                this.connectService.contractRouter_mod.address,
+                999999999999
+            );
+        await contractB.instance
+            .connect(this.connectService.signer)
+            .approve(
+                this.connectService.contractRouter_mod.address,
+                999999999999
+            );
+        await this.connectService.contractRouter_mod
+            .connect(this.connectService.signer)
+            .addLiquidity(
+                contractA.address,
+                contractB.address,
+                amountA.toString(),
+                amountB.toString(),
+                amountA.toString(),
+                amountB.toString(),
+                this.connectService.signer.getAddress(),
+                216604939048
+            );
     }
 }

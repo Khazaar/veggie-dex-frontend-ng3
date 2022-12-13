@@ -1,0 +1,14 @@
+@use "@material/card";
+
+@include card.core-styles;
+
+.item {
+    align-content: center;
+}
+.container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 100%;
+}
