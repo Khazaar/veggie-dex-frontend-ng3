@@ -23,6 +23,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { AddLiquidityComponent } from "./core/components/add-liquidity/add-liquidity.component";
 import { SwapComponent } from "./core/components/swap/swap.component";
 import { FooterLayoutComponent } from "./core/components/_layouts/footer-layout/footer-layout.component";
+import { LiquidityPoolsComponent } from './core/components/liquidity-pools/liquidity-pools.component';
 
 @NgModule({
     declarations: [
@@ -36,6 +37,7 @@ import { FooterLayoutComponent } from "./core/components/_layouts/footer-layout/
         AddLiquidityComponent,
         SwapComponent,
         FooterLayoutComponent,
+        LiquidityPoolsComponent,
     ],
     imports: [
         BrowserModule,

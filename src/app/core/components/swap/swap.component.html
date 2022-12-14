@@ -10,7 +10,7 @@
                     *ngFor="let token of tokenContracts"
                     [value]="token"
                 >
-                    {{ token.name }}
+                    {{ token.nameLong }}
                 </mat-option>
             </mat-select>
         </mat-form-field>
@@ -32,7 +32,7 @@
         <mat-icon style="margin-bottom: 0.5rem">arrow_downward</mat-icon>
     </div>
 
-    <div class="token-container">
+    <div class="">
         <mat-form-field appearance="fill">
             <mat-label>Token B</mat-label>
             <mat-select
@@ -43,11 +43,11 @@
                     *ngFor="let token of tokenContracts"
                     [value]="token"
                 >
-                    {{ token.name }}
+                    {{ token.nameLong }}
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <form class="example-form">
+        <!-- <form class="example-form">
             <mat-form-field appearance="fill">
                 <mat-label>Amount</mat-label>
                 <input
@@ -59,7 +59,7 @@
                     (keyup)="onSelectedAmountBChange()"
                 />
             </mat-form-field>
-        </form>
+        </form> -->
     </div>
 
     <button class="item" mat-raised-button color="accent" (click)="clickSwap()">

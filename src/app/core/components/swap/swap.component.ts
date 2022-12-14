@@ -19,10 +19,10 @@ export class SwapComponent {
     @Output() selectedTokenBChange: EventEmitter<ISmartContract> =
         new EventEmitter<ISmartContract>();
     public tokenContracts: ISmartContract[] = [];
-    @Input() selectedTokenA: ISmartContract;
-    @Input() selectedTokenB: ISmartContract;
-    @Input() selectedAmountA: number;
-    @Input() selectedAmountB: number;
+    @Input() selectedTokenA: ISmartContract = Apple;
+    @Input() selectedTokenB: ISmartContract = Potato;
+    @Input() selectedAmountA: number = 100000;
+    @Input() selectedAmountB: number = 100000;
     public onSelectedAmountAChange(): void {
         this.selectedAmountChange.emit(this.selectedAmountA);
     }
@@ -50,7 +50,7 @@ export class SwapComponent {
     }
 
     public async clickSwap() {
-        this.smartContractService.addLiquidity(
+        this.smartContractService.swap(
             this.selectedTokenA,
             this.selectedTokenB,
             BigInt(this.selectedAmountA),

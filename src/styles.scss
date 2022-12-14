@@ -53,18 +53,18 @@ mat-card-title {
     text-align: center;
     padding-bottom: 0.5rem;
 }
-@mixin radius($radius: 20px, $rtl-reflexive: 20px) {
-}
+// @mixin radius($radius: 15px, $rtl-reflexive: 20px) {
+// }
 
-.mdc-card {
-    border-radius: 15px;
-}
+// .mdc-card {
+//     border-radius: 12px;
+// }
 
-$medium-component-radius: 20px !default;
-$--mdc-shape-medium: 20px !default;
+// $medium-component-radius: 20px !default;
+// $--mdc-shape-medium: 20px !default;
 
 .mat-mdc-card {
-    --mdc-shape-medium: 20px;
+    --mdc-shape-medium: 15px;
 }
 
 .mat-mdc-raised-button {

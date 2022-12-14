@@ -19,10 +19,10 @@ export class AddLiquidityComponent {
     @Output() selectedTokenBChange: EventEmitter<ISmartContract> =
         new EventEmitter<ISmartContract>();
     public tokenContracts: ISmartContract[] = [];
-    @Input() selectedTokenA: ISmartContract;
-    @Input() selectedTokenB: ISmartContract;
-    @Input() selectedAmountA: number;
-    @Input() selectedAmountB: number;
+    @Input() selectedTokenA: ISmartContract = Apple;
+    @Input() selectedTokenB: ISmartContract = Potato;
+    @Input() selectedAmountA: number = 500000;
+    @Input() selectedAmountB: number = 500000;
     public onSelectedAmountAChange(): void {
         this.selectedAmountChange.emit(this.selectedAmountA);
     }

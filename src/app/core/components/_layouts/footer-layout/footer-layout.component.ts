@@ -5,4 +5,6 @@ import { Component } from "@angular/core";
     templateUrl: "./footer-layout.component.html",
     styleUrls: ["./footer-layout.component.scss"],
 })
-export class FooterLayoutComponent {}
+export class FooterLayoutComponent {
+    public onClick() {}
+}

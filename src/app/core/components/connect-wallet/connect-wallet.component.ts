@@ -18,7 +18,7 @@ export class ConnectWalletComponent {
     public signerBalance: string;
     async clickConnect() {
         this.connectService.connetcEthers();
-        this.signerAddress = await this.connectService.getSignerAddress();
+        this.signerAddress = await this.connectService.signer.getAddress();
         this.signerBalance = await this.connectService.getSignerBalance();
         await this.userAssetsComponent.onClickShow();
     }

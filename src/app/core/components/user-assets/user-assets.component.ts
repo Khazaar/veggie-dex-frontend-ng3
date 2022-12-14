@@ -17,7 +17,7 @@ let ASSET_DATA: Asset[] = [
 @Component({
     selector: "vd-user-assets",
     templateUrl: "./user-assets.component.html",
-    styleUrls: ["./user-assets.component.less"],
+    styleUrls: ["./user-assets.component.scss"],
 })
 @Injectable({
     providedIn: "root",
