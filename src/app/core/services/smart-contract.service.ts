@@ -103,7 +103,7 @@ export class SmartContractService {
             this.connectService
                 .getTokenContracts()
                 .forEach((contract: ISmartContract) => {
-                    if (contract.address == address) {
+                    if (contract.address["hardhat"] == address) {
                         resolve(contract);
                         return;
                     }

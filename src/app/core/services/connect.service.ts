@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ethers } from "ethers";
+import { Hardhat, INetwork } from "../smart-contracts/networks";
 import {
     Potato,
     Apple,
@@ -9,6 +10,7 @@ import {
     Router_mod,
     Pair,
     IPair,
+    IAddress,
 } from "../smart-contracts/smart-contract-data";
 
 @Injectable({
@@ -22,16 +24,22 @@ export class ConnectService {
     public contractPair: ethers.Contract;
     public contractRouter_mod: ethers.Contract;
     public tokenContracts: ISmartContract[] = [];
-    //public signerAddress: string;
+    public network: INetwork = Hardhat;
 
     public getTokenContracts() {
         return this.tokenContracts;
     }
     public async fetchSmartContract() {
+        const network = this.network.nameShort as keyof typeof Potato.address;
+        // console.log(`Key is ${network}`);
+        // const addressAll: IAddress = Potato.address;
+        // const address: string = addressAll[network as ObjectKey];
+        // console.log(`Address is ${address}`);
         //this.signerAddress = await this.signer.getAddress();
         // Potato
+
         this.contractPotato = new ethers.Contract(
-            Potato.address,
+            Potato.address[network],
             Potato.abi as any,
             this.signer
         );
@@ -39,21 +47,21 @@ export class ConnectService {
 
         // Apple
         this.contractApple = new ethers.Contract(
-            Apple.address,
+            Apple.address[network],
             Apple.abi as any,
             this.signer
         );
         Apple.instance = this.contractApple;
         // LSR
         this.contractLSR = new ethers.Contract(
-            LSR.address,
+            LSR.address[network],
             LSR.abi as any,
             this.signer
         );
         LSR.instance = this.contractLSR;
         // Factory
         this.contractFactory = new ethers.Contract(
-            Factory.address,
+            Factory.address[network],
             Factory.abi as any,
             this.signer
         );
@@ -61,7 +69,7 @@ export class ConnectService {
 
         // Pair
         this.contractPair = new ethers.Contract(
-            Pair.address,
+            Pair.address[network],
             Pair.abi as any,
             this.signer
         );
@@ -69,7 +77,7 @@ export class ConnectService {
 
         // Router
         this.contractRouter_mod = new ethers.Contract(
-            Router_mod.address,
+            Router_mod.address[network],
             Router_mod.abi as any,
             this.signer
         );

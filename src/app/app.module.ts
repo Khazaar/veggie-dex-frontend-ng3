@@ -25,6 +25,7 @@ import { SwapComponent } from "./core/components/swap/swap.component";
 import { FooterLayoutComponent } from "./core/components/_layouts/footer-layout/footer-layout.component";
 import { LiquidityPoolsComponent } from "./core/components/liquidity-pools/liquidity-pools.component";
 import { AmplifyAuthenticatorModule } from "@aws-amplify/ui-angular";
+import { SelectNetworkComponent } from './core/components/select-network/select-network.component';
 
 @NgModule({
     declarations: [
@@ -39,6 +40,7 @@ import { AmplifyAuthenticatorModule } from "@aws-amplify/ui-angular";
         SwapComponent,
         FooterLayoutComponent,
         LiquidityPoolsComponent,
+        SelectNetworkComponent,
     ],
     imports: [
         BrowserModule,

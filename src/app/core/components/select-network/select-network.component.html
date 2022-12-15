@@ -1,0 +1,11 @@
+<mat-form-field appearance="fill">
+    <mat-label>Selected network</mat-label>
+    <mat-select
+        [(ngModel)]="selectedNetwork"
+        (valueChange)="onSelectedTokenChange($event)"
+    >
+        <mat-option *ngFor="let network of networks" [value]="network">
+            {{ network.nameLong }}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
