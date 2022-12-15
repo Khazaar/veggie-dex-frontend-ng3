@@ -2,7 +2,24 @@
 
 @include card.core-styles;
 
-.connect {
+// .connect {
+//     display: flex;
+//     justify-content: flex-end;
+// }
+
+.item {
+}
+
+.container1 {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 80px;
+    //align-items: center;
+}
+
+.container2 {
+    display: flex;
+    flex-direction: row;
+    // align-items: center;
 }

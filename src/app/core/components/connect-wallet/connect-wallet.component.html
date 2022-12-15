@@ -1,6 +1,11 @@
-<div style="text-align: right">
-    <button mat-raised-button color="accent" (click)="clickConnect()">
-        Connect wallet <mat-icon>account_balance_wallet</mat-icon>
+<div class="container">
+    <button
+        mat-raised-button
+        color="accent"
+        (click)="clickConnect()"
+        class="item"
+    >
+        {{ buttonText }} <mat-icon>account_balance_wallet</mat-icon>
     </button>
-    <div [innerHTML]="signerAddress" style="margin-top: 0.6rem"></div>
+    <div style="margin-top: 0.1rem" class="" [innerHTML]="message"></div>
 </div>

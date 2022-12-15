@@ -15,11 +15,15 @@ export class ConnectWalletComponent {
         public userAssetsComponent: UserAssetsComponent
     ) {}
     public signerAddress: string;
-    public signerBalance: string;
+    public message: string = "Please, connect your wallet";
+    public buttonText: string = "Connect wallet";
     async clickConnect() {
         this.connectService.connetcEthers();
         this.signerAddress = await this.connectService.signer.getAddress();
-        this.signerBalance = await this.connectService.getSignerBalance();
+
+        this.message = this.signerAddress;
+        this.buttonText = "Wallet connected";
+
         await this.userAssetsComponent.onClickShow();
     }
 }

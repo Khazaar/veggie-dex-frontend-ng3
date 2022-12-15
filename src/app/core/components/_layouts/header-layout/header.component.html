@@ -1,17 +1,18 @@
-<mat-card
-    style="
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        height: 80px;
-    "
->
-    <div>
-        <img src="../../../../../assets/images/Logo.png" width="100" alt="" />
+<mat-card class="container1">
+    <div class="container2">
+        <div class="item">
+            <img
+                src="../../../../../assets/images/Logo.png"
+                width="100"
+                alt=""
+            />
+        </div>
+        <div class="" style="margin-left: 20px">
+            <vd-select-network></vd-select-network>
+        </div>
     </div>
-    <div><vd-select-network></vd-select-network></div>
 
-    <div class="connect">
+    <div class="">
         <vd-connect-wallet></vd-connect-wallet>
     </div>
 </mat-card>

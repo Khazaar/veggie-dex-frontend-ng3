@@ -43,6 +43,7 @@ body {
 mat-card {
     margin: 7px;
     padding: 7px;
+    padding-bottom: 12px;
 }
 
 mat-option {
@@ -53,15 +54,6 @@ mat-card-title {
     text-align: center;
     padding-bottom: 0.5rem;
 }
-// @mixin radius($radius: 15px, $rtl-reflexive: 20px) {
-// }
-
-// .mdc-card {
-//     border-radius: 12px;
-// }
-
-// $medium-component-radius: 20px !default;
-// $--mdc-shape-medium: 20px !default;
 
 .mat-mdc-card {
     --mdc-shape-medium: 15px;
@@ -76,9 +68,45 @@ mat-card-title {
 }
 
 mat-form-field {
-    width: 150px;
+    width: fit-content;
+}
+.mat-form-field {
+    width: fit-content;
 }
 
 .mdc-button {
     --mdc-typography-button-font-size: 1.1rem;
+    width: fit-content;
+}
+
+// button {
+//     width: fit-content;
+// }
+
+// .mat-mdc-text-field-wrapper {
+//     width: fit-content !important;
+// }
+
+.mat-mdc-form-field-infix {
+    width: fit-content !important;
+}
+
+// .mat-mdc-form-field-flex {
+//     width: fit-content !important;
+// }
+
+// .mat-mdc-select {
+//     width: fit-content !important;
+// }
+
+// .mat-mdc-select {
+//     width: fit-content !important;
+// }
+
+// .mat-mdc-form-field {
+//     width: 120px;
+// }
+
+.mdc-text-field__input {
+    width: 100px !important;
 }
