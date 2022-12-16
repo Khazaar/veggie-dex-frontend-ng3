@@ -2,12 +2,11 @@
 
 @include card.core-styles;
 
-.card {
-    width: 95%;
+.item {
+    width: 100%;
 }
 .container {
     display: flex;
     align-items: center;
     flex-direction: column;
-    // background-image: url("../../../../../assets/images/background3.jpg");
 }

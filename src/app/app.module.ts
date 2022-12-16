@@ -25,7 +25,10 @@ import { SwapComponent } from "./core/components/swap/swap.component";
 import { FooterLayoutComponent } from "./core/components/_layouts/footer-layout/footer-layout.component";
 import { LiquidityPoolsComponent } from "./core/components/liquidity-pools/liquidity-pools.component";
 import { AmplifyAuthenticatorModule } from "@aws-amplify/ui-angular";
-import { SelectNetworkComponent } from './core/components/select-network/select-network.component';
+import { SelectNetworkComponent } from "./core/components/select-network/select-network.component";
+import { WhitepaperComponent } from "./core/components/_windows/whitepaper/whitepaper.component";
+import { MatDialogModule } from "@angular/material/dialog";
+import { ContactUsComponent } from './core/components/_windows/contact-us/contact-us.component';
 
 @NgModule({
     declarations: [
@@ -41,6 +44,8 @@ import { SelectNetworkComponent } from './core/components/select-network/select-
         FooterLayoutComponent,
         LiquidityPoolsComponent,
         SelectNetworkComponent,
+        WhitepaperComponent,
+        ContactUsComponent,
     ],
     imports: [
         BrowserModule,
@@ -56,6 +61,7 @@ import { SelectNetworkComponent } from './core/components/select-network/select-
         FormsModule,
         MatIconModule,
         AmplifyAuthenticatorModule,
+        MatDialogModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

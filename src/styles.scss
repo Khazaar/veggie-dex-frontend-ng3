@@ -63,10 +63,6 @@ mat-card-title {
     --mdc-shape-small: 20px;
 }
 
-.mat-mdc-table {
-    border-radius: 8px;
-}
-
 mat-form-field {
     width: fit-content;
 }
@@ -107,6 +103,26 @@ mat-form-field {
 //     width: 120px;
 // }
 
-.mdc-text-field__input {
-    width: 100px !important;
+// .mdc-text-field__input {
+//     width: 100px !important;
+// }
+
+// .mat-table {
+//     border-radius: 8px !important;
+//     overflow: hidden !important;
+//     background-color: transparent !important;
+// }
+
+// table {
+//     width: 100%;
+//     border-collapse: collapse;
+//     border-radius: 5em;
+// }
+
+.mdc-data-table {
+    border-radius: 10px;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+    --mdc-shape-medium: 14px;
 }
