@@ -1,4 +1,12 @@
 .container {
     padding: 2rem;
     font-size: large;
+    background-blend-mode: lighten;
+}
+
+.bg-image {
+    background-image: url("/assets/images/bg2.png");
+    width: 100%;
+    background-size: cover;
+    background-blend-mode: lighten;
 }

@@ -1,13 +1,20 @@
-<div>
-    <vd-header></vd-header>
+<div class="bg-image">
+    <div class="header-wapper">
+        <vd-header></vd-header>
+    </div>
+
+    <div class="content-wrapper">
+        <div style="flex-grow: 1; flex-shrink: 1">
+            <vd-dex-layout></vd-dex-layout>
+        </div>
+        <div style="flex-grow: 1; flex-shrink: 1">
+            <vd-user-layout></vd-user-layout>
+        </div>
+    </div>
+
+    <div class="footer-wapper">
+        <vd-footer-layout></vd-footer-layout>
+    </div>
 </div>
 
-<div style="display: flex; flex-direction: row">
-    <div style="flex-grow: 1; flex-shrink: 1">
-        <vd-dex-layout></vd-dex-layout>
-    </div>
-    <div style="flex-grow: 1; flex-shrink: 1">
-        <vd-user-layout></vd-user-layout>
-    </div>
-</div>
-<div><vd-footer-layout></vd-footer-layout></div>
+<!-- <div [ngStyle]="{ background: 'url(assets/images/bg1.png)'}"></div> -->

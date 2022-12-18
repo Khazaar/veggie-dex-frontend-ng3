@@ -1,14 +1,17 @@
 @use "@material/card";
 
+@import "../../../../../assets/styles.scss";
+
 @include card.core-styles;
 
 .item {
     align-content: center;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    height: 2.5rem;
 }
 .container {
     display: flex;
-    align-items: center;
     flex-direction: row;
-    justify-content: space-around;
-    height: 100%;
+    padding: 0;
 }

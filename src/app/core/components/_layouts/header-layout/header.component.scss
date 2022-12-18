@@ -1,4 +1,5 @@
 @use "@material/card";
+@import "../../../../../assets/styles.scss";
 
 @include card.core-styles;
 
@@ -7,19 +8,27 @@
 //     justify-content: flex-end;
 // }
 
-.item {
+.item-horiz {
 }
 
-.container1 {
+.margin-left {
+    margin-left: 2rem;
+}
+
+.container-horiz {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     height: 80px;
-    //align-items: center;
 }
 
 .container2 {
     display: flex;
     flex-direction: row;
-    // align-items: center;
+}
+
+.bg-image {
+    background-image: url("/assets/images/bg2.png");
+    width: 100%;
+    background-size: cover;
 }

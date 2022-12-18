@@ -1,15 +1,17 @@
-<mat-card style="height: 50px">
-    <div class="container">
-        <button mat-button (click)="onClickWhitepaper()">Whitepaper</button>
-        <button mat-button (click)="onClickGithub()">
-            <a
-                style="text-decoration: none; color: black"
-                href="https://github.com/Khazaar?tab=repositories"
-                target="_blank"
-            >
-                Github</a
-            >
-        </button>
-        <button mat-button (click)="onClickContact()">Contact us</button>
-    </div>
+<mat-card class="container bottom-margin">
+    <button class="item" mat-button (click)="onClickWhitepaper()">
+        Whitepaper
+    </button>
+    <button class="item" mat-button (click)="onClickGithub()">
+        <a
+            style="text-decoration: none; color: black"
+            href="https://github.com/Khazaar?tab=repositories"
+            target="_blank"
+        >
+            Github</a
+        >
+    </button>
+    <button class="item" mat-button (click)="onClickContact()">
+        Contact us
+    </button>
 </mat-card>
