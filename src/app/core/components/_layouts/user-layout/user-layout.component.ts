@@ -9,12 +9,7 @@ import { ConnectService } from "src/app/core/services/connect.service";
     styleUrls: ["./user-layout.component.scss"],
 })
 export class UserLayoutComponent {
-    subscription: Subscription;
-    constructor(public connectService: ConnectService) {
-        this.subscription = connectService.tokenMinted$.subscribe((str) => {
-            console.log("This is a very good news", str);
-        });
-    }
+    constructor(public connectService: ConnectService) {}
 
     public tokenMinted() {
         console.log("Event recieved");

@@ -1,10 +1,11 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { ethers } from "ethers";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import {
     IPair,
     ISmartContract,
     Pair,
+    Potato,
 } from "../smart-contracts/smart-contract-data";
 //import ERC20Potato from "../smart-contracts/ERC20Potato.json";
 import { ConnectService } from "./connect.service";
@@ -13,10 +14,23 @@ import { ConnectService } from "./connect.service";
     providedIn: "root",
 })
 export class SmartContractService {
-
     public tokenPairs: IPair[] = [];
+    public network: keyof typeof Potato.address;
+
+    private liquidityAdded = new Subject<void>();
+    public LiquidityAdded$(): Observable<void> {
+        return this.liquidityAdded.asObservable();
+    }
+
+    private swapped = new Subject<void>();
+    public Swapped$(): Observable<void> {
+        return this.liquidityAdded.asObservable();
+    }
+
     constructor(public connectService: ConnectService) {
-        //this.fetchSmartContract();
+        this.subscribePairAndRouterEvents();
+        this.network = this.connectService.network
+            .nameShort as keyof typeof Potato.address;
     }
 
     public async mintTokens(contract: ethers.Contract, amount: BigInt) {
@@ -60,8 +74,8 @@ export class SmartContractService {
         await this.connectService.contractRouter_mod
             .connect(this.connectService.signer)
             .addLiquidity(
-                contractA.address,
-                contractB.address,
+                contractA.address[this.network],
+                contractB.address[this.network],
                 amountA.toString(),
                 amountB.toString(),
                 amountA.toString(),
@@ -94,7 +108,10 @@ export class SmartContractService {
             .swapExactTokensForTokens(
                 amountA.toString(),
                 1,
-                [contractA.address, contractB.address],
+                [
+                    contractA.address[this.network],
+                    contractB.address[this.network],
+                ],
                 this.connectService.signer.getAddress(),
                 99999999999999
             );
@@ -104,7 +121,7 @@ export class SmartContractService {
             this.connectService
                 .getTokenContracts()
                 .forEach((contract: ISmartContract) => {
-                    if (contract.address["hardhat"] == address) {
+                    if (contract.address[this.network] == address) {
                         resolve(contract);
                         return;
                     }
@@ -112,7 +129,7 @@ export class SmartContractService {
             reject();
         });
     }
-    public async getPairs() {
+    public async getPairs(): Promise<IPair[]> {
         const nPairs =
             await this.connectService.contractFactory.allPairsLength();
         const tokenPairs: IPair[] = [];
@@ -150,9 +167,9 @@ export class SmartContractService {
                     reserve0: reserve0,
                     reserve1: reserve1,
                 };
-                console.log(
-                    `Token 0 :${pair.token0.nameShort}, token 1 ${pair.token1.nameShort}`
-                );
+                // console.log(
+                //     `Token 0 :${pair.token0.nameShort}, token 1 ${pair.token1.nameShort}`
+                // );
 
                 //const pair: PancakePair = await new PancakePair__factory(owner).attach(pairAddress);
                 tokenPairs.push(pair);
@@ -162,5 +179,26 @@ export class SmartContractService {
         }
         this.tokenPairs = tokenPairs;
         return tokenPairs;
+    }
+
+    public async subscribePairAndRouterEvents() {
+        const pairs = await this.getPairs();
+        pairs.forEach((iPair) =>
+            iPair.instance.on("Swap", (amountA, amountB) => {
+                console.log(
+                    `Added liquidity to ${iPair.name}: amoint A ${amountA}, amountB ${amountB}`
+                );
+                this.swapped.next();
+            })
+        );
+        this.connectService.contractRouter_mod.on(
+            "AddLiquidity",
+            (sender, amount0In, amount1In, amount0Out, amount1Out, to) => {
+                console.log(
+                    `Added liquidity: sender ${sender}, amount0In ${amount0In}, amount1In ${amount1In}, amount0Out ${amount0Out}, amount1Out ${amount1Out}, to ${to}`
+                );
+                this.liquidityAdded.next();
+            }
+        );
     }
 }

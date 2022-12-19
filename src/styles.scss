@@ -1,6 +1,7 @@
 @use "@angular/material" as mat;
 @use "@material/shape";
-
+@use "palette-helper";
+@import "@angular/material/theming";
 @include mat.core();
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 // @import "~@coreui/coreui-pro/scss/coreui";
@@ -15,9 +16,17 @@ $my-app-theme: mat.define-light-theme(
             primary: $my-app-primary,
             accent: $my-app-accent,
             warn: $my-app-warn,
+            background: green,
         ),
     )
 );
+
+$custom-background-color: #63ef6e;
+$my-app-theme: palette-helper.modify-background(
+    $my-app-theme,
+    $custom-background-color
+);
+@include mat.all-component-themes($my-app-theme);
 @include mat.button-theme($my-app-theme);
 @include mat.core-theme($my-app-theme);
 
@@ -51,9 +60,9 @@ mat-card-title {
 }
 
 .mat-mdc-card {
-    --mdc-shape-medium: 15px;
-    --mdc-elevated-card-container-color: #fcf684;
-    --mdc-theme-surface: #fcf684;
+    --mdc-shape-medium: 30px;
+    --mdc-elevated-card-container-color: #fce084e4;
+    --mdc-theme-surface: #fce084e4;
 }
 
 .mat-mdc-raised-button {
@@ -74,9 +83,9 @@ mat-card-title {
     --mdc-protected-button-container-color: #63ef6e;
 }
 
-.mat-mdc-dialog-container .mdc-dialog__surface {
-    --mdc-shape-medium: 14px;
-}
+// .mat-mdc-dialog-container .mdc-dialog__surface {
+//     --mdc-shape-medium: 20px;
+// }
 
 .mat-mdc-form-field-flex {
     width: 7rem;
@@ -84,4 +93,75 @@ mat-card-title {
 
 .mdc-text-field__input {
     width: 7rem !important;
+}
+
+// .mat-form-field-appearance-outline .mat-form-field-outline-start {
+//     background-color: red !important;
+// }
+// .mat-form-field-appearance-outline .mat-form-field-outline-gap {
+//     background-color: red !important;
+// }
+// .mat-form-field-appearance-outline .mat-form-field-outline-end {
+//     background-color: red !important;
+// }
+// mat-form-field mat-label {
+//     background-color: red;
+// }
+// mat-form-field.mat-form-field {
+//     color: red;
+// }
+
+@function modify-background($theme, $background-color) {
+    // Replace the background in the color object's background palette.
+    $theme-color: map-get($theme, color);
+    $color-background-palette: map-get($theme-color, background);
+    $color-background-palette: map-merge(
+        $color-background-palette,
+        (
+            background: $background-color,
+        )
+    );
+    $color-background-palette: map-merge(
+        $color-background-palette,
+        (
+            raised-button: $background-color,
+        )
+    );
+
+    // Replace the background in the background palette.
+    $background-palette: map-get($theme, background);
+    $background-palette: map-merge(
+        $background-palette,
+        (
+            background: $background-color,
+        )
+    );
+    $background-palette: map-merge(
+        $background-palette,
+        (
+            raised-button: $background-color,
+        )
+    );
+
+    // Merge the changes into a new theme.
+    $modified-theme-color: map-merge(
+        $theme-color,
+        (
+            background: $color-background-palette,
+        )
+    );
+    $modified-theme: map-merge(
+        $theme,
+        (
+            color: $modified-theme-color,
+        )
+    );
+    $modified-theme: map-merge(
+        $modified-theme,
+        (
+            background: $background-palette,
+        )
+    );
+
+    @return $modified-theme;
 }

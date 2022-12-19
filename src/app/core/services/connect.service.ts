@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ethers } from "ethers";
+import { Observable } from "rxjs";
 import { Subject } from "rxjs/internal/Subject";
 import { Hardhat, INetwork } from "../smart-contracts/networks";
 import {
@@ -27,10 +28,15 @@ export class ConnectService {
     public tokenContracts: ISmartContract[] = [];
     public network: INetwork = Hardhat;
 
-    // Observable string sources
-    private tokenMintedSource = new Subject<string>();
-    // Observable string streams
-    tokenMinted$ = this.tokenMintedSource.asObservable();
+    private tokenMinted = new Subject<ISmartContract>();
+    public TokenMinted$(): Observable<ISmartContract> {
+        return this.tokenMinted.asObservable();
+    }
+
+    private walletConnected = new Subject<void>();
+    public walletConnected$(): Observable<void> {
+        return this.walletConnected.asObservable();
+    }
 
     public getTokenContracts() {
         return this.tokenContracts;
@@ -100,7 +106,9 @@ export class ConnectService {
     public signer: ethers.providers.JsonRpcSigner;
     public isConnected: boolean = false;
 
-    constructor() {}
+    constructor() {
+        this.subscribeTransferTokensEvents();
+    }
     public async connetcEthers() {
         this.isConnected = this.provider !== undefined;
         this.provider = new ethers.providers.Web3Provider(
@@ -109,23 +117,20 @@ export class ConnectService {
         this.signer = this.provider.getSigner();
         console.log(`Is connected? ${this.isConnected}`);
         this.fetchSmartContract();
-        this.listenEmitAppleEvent();
+
+        this.walletConnected.next();
     }
-    // public async getSignerAddress() {
-    //     const addr = await this.signer.getAddress();
-    //     console.log(addr);
-    //     return addr;
-    // }
 
     public async getSignerBalance() {
         return ethers.utils.formatEther(await this.signer.getBalance());
     }
 
-    public async listenEmitAppleEvent() {
-        this.contractApple.on("Transfer", (from, to, amount) => {
-            console.log(`Minted ${amount} tokens`);
-
-            this.tokenMintedSource.next(`Minted ${amount} tokens`);
-        });
+    public async subscribeTransferTokensEvents() {
+        this.tokenContracts.forEach((iContract) =>
+            iContract.instance.on("Transfer", (from, to, amount) => {
+                console.log(`Transfeed ${amount} tokens from ${from} to ${to}`);
+                this.tokenMinted.next(iContract);
+            })
+        );
     }
 }

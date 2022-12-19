@@ -5,13 +5,22 @@ import { ISmartContract } from "../../smart-contracts/smart-contract-data";
 import { Potato, Apple, LSR } from "../../smart-contracts/smart-contract-data";
 import { ConnectService } from "../../services/connect.service";
 import { UserAssetsComponent } from "../user-assets/user-assets.component";
+import { BaseCard } from "../base.card";
 
 @Component({
     selector: "vd-swap",
     templateUrl: "./swap.component.html",
     styleUrls: ["./swap.component.scss"],
 })
-export class SwapComponent {
+export class SwapComponent extends BaseCard {
+    constructor(
+        smartContractService: SmartContractService,
+        connectService: ConnectService,
+        public userAssetsComponent: UserAssetsComponent
+    ) {
+        super(connectService, smartContractService);
+        this.tokenContracts = [Apple, Potato, LSR];
+    }
     @Output() selectedAmountChange: EventEmitter<number> =
         new EventEmitter<number>();
     @Output() selectedTokenAChange: EventEmitter<ISmartContract> =
@@ -39,15 +48,6 @@ export class SwapComponent {
         this.selectedTokenBChange.emit(this.selectedTokenB);
         //console.log(`Selected token is ${this.selectedToken.name}`);
     }
-    constructor(
-        public smartContractService: SmartContractService,
-        public connectService: ConnectService,
-        public userAssetsComponent: UserAssetsComponent
-    ) {}
-
-    ngOnInit() {
-        this.tokenContracts = [Apple, Potato, LSR];
-    }
 
     public async clickSwap() {
         this.smartContractService.swap(
@@ -57,4 +57,6 @@ export class SwapComponent {
             BigInt(this.selectedAmountB)
         );
     }
+
+    public refresh() {}
 }

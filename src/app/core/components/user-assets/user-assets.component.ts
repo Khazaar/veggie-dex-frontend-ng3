@@ -2,6 +2,7 @@ import { Component, Injectable } from "@angular/core";
 import { SmartContractService } from "../../services/smart-contract.service";
 import { ConnectService } from "../../services/connect.service";
 import { Subscription } from "rxjs";
+import { BaseCard } from "../base.card";
 
 export interface Asset {
     position: number;
@@ -23,22 +24,21 @@ let ASSET_DATA: Asset[] = [
 @Injectable({
     providedIn: "root",
 })
-export class UserAssetsComponent {
+export class UserAssetsComponent extends BaseCard {
     public displayedColumns: string[] = ["name", "amount"];
     public dataSource = ASSET_DATA;
     public ETHBalance: string;
-    subscription: Subscription;
 
     constructor(
-        public connectService: ConnectService,
-        public smartContractService: SmartContractService
+        connectService: ConnectService,
+        martContractService: SmartContractService
     ) {
-        this.subscription = connectService.tokenMinted$.subscribe((str) => {
-            this.onClickShow();
-        });
+        super(connectService, martContractService);
     }
+
     //public potatoBalance: BigInt;
-    public async onClickShow() {
+    public async onClickShow() {}
+    public async refresh() {
         const potatoBalance: BigInt =
             await this.smartContractService.getTokensBalance(
                 this.connectService.contractPotato
@@ -58,5 +58,6 @@ export class UserAssetsComponent {
         ASSET_DATA[2].amount = lsrBalance;
 
         this.ETHBalance = await this.smartContractService.getSignerBalance();
+        console.log("User assets refreshed!");
     }
 }
