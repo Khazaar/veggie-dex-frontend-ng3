@@ -28,7 +28,7 @@ import { AmplifyAuthenticatorModule } from "@aws-amplify/ui-angular";
 import { SelectNetworkComponent } from "./core/components/select-network/select-network.component";
 import { WhitepaperComponent } from "./core/components/_windows/whitepaper/whitepaper.component";
 import { MatDialogModule } from "@angular/material/dialog";
-import { ContactUsComponent } from './core/components/_windows/contact-us/contact-us.component';
+import { ContactUsComponent } from "./core/components/_windows/contact-us/contact-us.component";
 
 @NgModule({
     declarations: [
@@ -66,4 +66,8 @@ import { ContactUsComponent } from './core/components/_windows/contact-us/contac
     providers: [],
     bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+    public refreshDex() {
+        
+    }
+}

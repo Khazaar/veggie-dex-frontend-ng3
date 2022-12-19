@@ -5,7 +5,7 @@
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 // @import "~@coreui/coreui-pro/scss/coreui";
 
-$my-app-primary: mat.define-palette(mat.$indigo-palette);
+$my-app-primary: mat.define-palette(mat.$green-palette);
 $my-app-accent: mat.define-palette(mat.$green-palette, A200, A100, A400);
 $my-app-warn: mat.define-palette(mat.$red-palette);
 
@@ -19,6 +19,7 @@ $my-app-theme: mat.define-light-theme(
     )
 );
 @include mat.button-theme($my-app-theme);
+@include mat.core-theme($my-app-theme);
 
 body {
     height: 100%;
@@ -31,10 +32,12 @@ body {
 }
 mat-card {
     margin-bottom: 1rem;
-    padding: 7px;
-    padding-bottom: 12px;
+    padding: 1.2rem;
+    // padding-top: 12px;
+    // padding-bottom: 12px;
     width: fit-content;
     --mdc-typography-headline6-font-size: 1.6rem;
+    background-color: bisque;
 }
 
 mat-option {
@@ -43,23 +46,22 @@ mat-option {
 
 mat-card-title {
     text-align: center;
-    padding-bottom: 0.5rem;
+    padding-bottom: 1rem;
     font-size: 2rem;
 }
 
 .mat-mdc-card {
     --mdc-shape-medium: 15px;
+    --mdc-elevated-card-container-color: #fcf684;
+    --mdc-theme-surface: #fcf684;
 }
 
 .mat-mdc-raised-button {
     --mdc-shape-small: 20px;
 }
 
-mat-form-field {
-    width: fit-content;
-}
-.mat-form-field {
-    width: fit-content;
+.mat-mdc-form-field-infix {
+    width: fit-content !important;
 }
 
 .mdc-button {
@@ -72,10 +74,14 @@ mat-form-field {
     --mdc-protected-button-container-color: #63ef6e;
 }
 
-.mat-mdc-form-field-infix {
-    width: fit-content !important;
-}
-
 .mat-mdc-dialog-container .mdc-dialog__surface {
     --mdc-shape-medium: 14px;
+}
+
+.mat-mdc-form-field-flex {
+    width: 7rem;
+}
+
+.mdc-text-field__input {
+    width: 7rem !important;
 }

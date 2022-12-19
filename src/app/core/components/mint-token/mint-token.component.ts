@@ -16,6 +16,7 @@ export class MintTokenComponent {
         new EventEmitter<number>();
     @Output() selectedTokenChange: EventEmitter<ISmartContract> =
         new EventEmitter<ISmartContract>();
+
     public tokenContracts: ISmartContract[] = [];
     @Input() selectedToken: ISmartContract = Apple;
     @Input() selectedAmount: number = 1000000;
@@ -40,12 +41,12 @@ export class MintTokenComponent {
 
     public async clickMint() {
         console.log(
-            `Minted token is ${this.selectedToken.nameLong}, amount is ${this.selectedAmount}`
+            `Going to mint token ${this.selectedToken.nameLong} in , amount ${this.selectedAmount}`
         );
-        this.smartContractService.mintTokens(
+
+        await this.smartContractService.mintTokens(
             this.selectedToken.instance,
             BigInt(this.selectedAmount)
         );
-        this.userAssetsComponent.onClickShow();
     }
 }

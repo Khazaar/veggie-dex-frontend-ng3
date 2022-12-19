@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
+import { EventEmitter, Injectable } from "@angular/core";
 import { ethers } from "ethers";
-import { AbiItem } from "web3-utils";
+import { Subject } from "rxjs";
 import {
     IPair,
     ISmartContract,
@@ -13,6 +13,7 @@ import { ConnectService } from "./connect.service";
     providedIn: "root",
 })
 export class SmartContractService {
+
     public tokenPairs: IPair[] = [];
     constructor(public connectService: ConnectService) {
         //this.fetchSmartContract();

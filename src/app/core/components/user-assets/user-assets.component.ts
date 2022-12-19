@@ -1,6 +1,7 @@
 import { Component, Injectable } from "@angular/core";
 import { SmartContractService } from "../../services/smart-contract.service";
 import { ConnectService } from "../../services/connect.service";
+import { Subscription } from "rxjs";
 
 export interface Asset {
     position: number;
@@ -26,11 +27,16 @@ export class UserAssetsComponent {
     public displayedColumns: string[] = ["name", "amount"];
     public dataSource = ASSET_DATA;
     public ETHBalance: string;
+    subscription: Subscription;
 
     constructor(
-        public smartContractService: SmartContractService,
-        public connectService: ConnectService
-    ) {}
+        public connectService: ConnectService,
+        public smartContractService: SmartContractService
+    ) {
+        this.subscription = connectService.tokenMinted$.subscribe((str) => {
+            this.onClickShow();
+        });
+    }
     //public potatoBalance: BigInt;
     public async onClickShow() {
         const potatoBalance: BigInt =

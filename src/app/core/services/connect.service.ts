@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ethers } from "ethers";
+import { Subject } from "rxjs/internal/Subject";
 import { Hardhat, INetwork } from "../smart-contracts/networks";
 import {
     Potato,
@@ -25,6 +26,11 @@ export class ConnectService {
     public contractRouter_mod: ethers.Contract;
     public tokenContracts: ISmartContract[] = [];
     public network: INetwork = Hardhat;
+
+    // Observable string sources
+    private tokenMintedSource = new Subject<string>();
+    // Observable string streams
+    tokenMinted$ = this.tokenMintedSource.asObservable();
 
     public getTokenContracts() {
         return this.tokenContracts;
@@ -103,6 +109,7 @@ export class ConnectService {
         this.signer = this.provider.getSigner();
         console.log(`Is connected? ${this.isConnected}`);
         this.fetchSmartContract();
+        this.listenEmitAppleEvent();
     }
     // public async getSignerAddress() {
     //     const addr = await this.signer.getAddress();
@@ -112,5 +119,13 @@ export class ConnectService {
 
     public async getSignerBalance() {
         return ethers.utils.formatEther(await this.signer.getBalance());
+    }
+
+    public async listenEmitAppleEvent() {
+        this.contractApple.on("Transfer", (from, to, amount) => {
+            console.log(`Minted ${amount} tokens`);
+
+            this.tokenMintedSource.next(`Minted ${amount} tokens`);
+        });
     }
 }
