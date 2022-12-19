@@ -10,3 +10,7 @@
     align-items: flex-end;
     min-width: 330px;
 }
+
+.mat-mdc-raised-button.mat-accent {
+    --mdc-protected-button-container-color: #ff7700;
+}

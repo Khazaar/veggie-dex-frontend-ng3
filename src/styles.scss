@@ -21,12 +21,12 @@ $my-app-theme: mat.define-light-theme(
     )
 );
 
-$custom-background-color: #63ef6e;
-$my-app-theme: palette-helper.modify-background(
-    $my-app-theme,
-    $custom-background-color
-);
-@include mat.all-component-themes($my-app-theme);
+// $custom-background-color: #63ef6e;
+// $my-app-theme: palette-helper.modify-background(
+//     $my-app-theme,
+//     $custom-background-color
+// );
+
 @include mat.button-theme($my-app-theme);
 @include mat.core-theme($my-app-theme);
 
@@ -80,7 +80,7 @@ mat-card-title {
 }
 
 .mat-mdc-raised-button.mat-accent {
-    --mdc-protected-button-container-color: #63ef6e;
+    --mdc-protected-button-container-color: #efa963;
 }
 
 // .mat-mdc-dialog-container .mdc-dialog__surface {
@@ -111,57 +111,10 @@ mat-card-title {
 //     color: red;
 // }
 
-@function modify-background($theme, $background-color) {
-    // Replace the background in the color object's background palette.
-    $theme-color: map-get($theme, color);
-    $color-background-palette: map-get($theme-color, background);
-    $color-background-palette: map-merge(
-        $color-background-palette,
-        (
-            background: $background-color,
-        )
-    );
-    $color-background-palette: map-merge(
-        $color-background-palette,
-        (
-            raised-button: $background-color,
-        )
-    );
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: rgb(255, 192, 2);
+}
 
-    // Replace the background in the background palette.
-    $background-palette: map-get($theme, background);
-    $background-palette: map-merge(
-        $background-palette,
-        (
-            background: $background-color,
-        )
-    );
-    $background-palette: map-merge(
-        $background-palette,
-        (
-            raised-button: $background-color,
-        )
-    );
-
-    // Merge the changes into a new theme.
-    $modified-theme-color: map-merge(
-        $theme-color,
-        (
-            background: $color-background-palette,
-        )
-    );
-    $modified-theme: map-merge(
-        $theme,
-        (
-            color: $modified-theme-color,
-        )
-    );
-    $modified-theme: map-merge(
-        $modified-theme,
-        (
-            background: $background-palette,
-        )
-    );
-
-    @return $modified-theme;
+.mdc-text-field--filled .mdc-line-ripple::after {
+    border-bottom-color: var(--mdc-theme-primary, #c86f21);
 }
