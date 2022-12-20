@@ -13,6 +13,7 @@ export interface Asset {
 let ASSET_DATA: Asset[] = [
     { position: 2, name: "Apple", amount: BigInt(0) },
     { position: 3, name: "Potato", amount: BigInt(0) },
+    { position: 3, name: "Tomato", amount: BigInt(0) },
     { position: 4, name: "LSR", amount: BigInt(0) },
 ];
 
@@ -43,6 +44,10 @@ export class UserAssetsComponent extends BaseCard {
             await this.smartContractService.getTokensBalance(
                 this.connectService.contractPotato
             );
+        const tomatoBalance: BigInt =
+            await this.smartContractService.getTokensBalance(
+                this.connectService.contractTomato
+            );
 
         const appleBalance: BigInt =
             await this.smartContractService.getTokensBalance(
@@ -55,7 +60,8 @@ export class UserAssetsComponent extends BaseCard {
             );
         ASSET_DATA[0].amount = appleBalance;
         ASSET_DATA[1].amount = potatoBalance;
-        ASSET_DATA[2].amount = lsrBalance;
+        ASSET_DATA[2].amount = tomatoBalance;
+        ASSET_DATA[3].amount = lsrBalance;
 
         this.ETHBalance = await this.smartContractService.getSignerBalance();
         console.log("User assets refreshed!");

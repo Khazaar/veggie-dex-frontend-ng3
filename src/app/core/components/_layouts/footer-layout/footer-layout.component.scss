@@ -8,10 +8,17 @@
     align-content: center;
     margin-left: 2rem;
     margin-right: 2rem;
-    height: 2.5rem;
+    height: $footer-height;
 }
 .container {
     display: flex;
     flex-direction: row;
     padding: 0;
+    border: 2px solid $border-color;
+}
+
+$border-color-vert: rgba(225, 149, 8, 0.781);
+.vert-borders {
+    border-left: 2px solid $border-color-vert;
+    border-right: 2px solid $border-color-vert;
 }

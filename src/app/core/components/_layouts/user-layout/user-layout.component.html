@@ -3,7 +3,7 @@
         <mat-card-title>Mint tokens</mat-card-title>
         <vd-mint-token (tokenMinted)="(tokenMinted)"></vd-mint-token>
     </mat-card>
-    <mat-card class="card">
+    <mat-card class="card" [ngClass]="'min-width'">
         <mat-card-title>User assets</mat-card-title>
         <vd-user-assets></vd-user-assets>
     </mat-card>

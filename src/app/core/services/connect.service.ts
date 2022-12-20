@@ -13,6 +13,7 @@ import {
     Pair,
     IPair,
     IAddress,
+    Tomato,
 } from "../smart-contracts/smart-contract-data";
 
 @Injectable({
@@ -21,6 +22,7 @@ import {
 export class ConnectService {
     public contractPotato: ethers.Contract;
     public contractApple: ethers.Contract;
+    public contractTomato: ethers.Contract;
     public contractLSR: ethers.Contract;
     public contractFactory: ethers.Contract;
     public contractPair: ethers.Contract;
@@ -43,19 +45,22 @@ export class ConnectService {
     }
     public async fetchSmartContract() {
         const network = this.network.nameShort as keyof typeof Potato.address;
-        // console.log(`Key is ${network}`);
-        // const addressAll: IAddress = Potato.address;
-        // const address: string = addressAll[network as ObjectKey];
-        // console.log(`Address is ${address}`);
-        //this.signerAddress = await this.signer.getAddress();
-        // Potato
 
+        // Potato
         this.contractPotato = new ethers.Contract(
             Potato.address[network],
             Potato.abi as any,
             this.signer
         );
         Potato.instance = this.contractPotato;
+
+        // Tomato
+        this.contractTomato = new ethers.Contract(
+            Tomato.address[network],
+            Tomato.abi as any,
+            this.signer
+        );
+        Tomato.instance = this.contractTomato;
 
         // Apple
         this.contractApple = new ethers.Contract(
@@ -94,8 +99,8 @@ export class ConnectService {
             this.signer
         );
         Router_mod.instance = this.contractLSR;
-        this.tokenContracts = [Apple, Potato, LSR];
-        //console.log(this.contractPotato.address);
+        this.tokenContracts = [Apple, Potato, Tomato, LSR];
+        this.subscribeTransferTokensEvents();
     }
 
     ngOnInit() {
@@ -106,9 +111,7 @@ export class ConnectService {
     public signer: ethers.providers.JsonRpcSigner;
     public isConnected: boolean = false;
 
-    constructor() {
-        this.subscribeTransferTokensEvents();
-    }
+    constructor() {}
     public async connetcEthers() {
         this.isConnected = this.provider !== undefined;
         this.provider = new ethers.providers.Web3Provider(
@@ -117,7 +120,6 @@ export class ConnectService {
         this.signer = this.provider.getSigner();
         console.log(`Is connected? ${this.isConnected}`);
         this.fetchSmartContract();
-
         this.walletConnected.next();
     }
 

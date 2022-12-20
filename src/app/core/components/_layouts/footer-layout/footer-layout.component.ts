@@ -17,7 +17,6 @@ export class FooterLayoutComponent implements OnInit {
             dialogRef.close();
         }, 1000000);
     }
-    public onClickGithub() {}
     public onClickContact() {
         const dialogRef = this.dialog.open(ContactUsComponent, {});
         setTimeout(() => {

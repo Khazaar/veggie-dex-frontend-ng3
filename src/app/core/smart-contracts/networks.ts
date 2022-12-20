@@ -5,7 +5,7 @@ export interface INetwork {
 }
 export const Hardhat: INetwork = {
     nameShort: "hardhat",
-    nameLong: "Hardhat local network",
+    nameLong: "Hardhat local",
     nativeToken: "Hardhat ETH",
 };
 export const BSC: INetwork = {
