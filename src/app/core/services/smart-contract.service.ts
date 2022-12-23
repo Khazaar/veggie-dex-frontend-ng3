@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { ethers } from "ethers";
-import { Observable, Subject } from "rxjs";
+import { min, Observable, Subject } from "rxjs";
 import {
     IPair,
     ISmartContract,
@@ -28,7 +28,7 @@ export class SmartContractService {
     }
 
     constructor(public connectService: ConnectService) {
-        this.subscribePairAndRouterEvents();
+        this.subscribeRouterContractsEvents();
         this.network = this.connectService.network
             .nameShort as keyof typeof Potato.address;
     }
@@ -83,6 +83,7 @@ export class SmartContractService {
                 this.connectService.signer.getAddress(),
                 216604939048
             );
+        this.subscribePairEvents();
     }
     public async swap(
         contractA: ISmartContract,
@@ -181,7 +182,7 @@ export class SmartContractService {
         return tokenPairs;
     }
 
-    public async subscribePairAndRouterEvents() {
+    public async subscribePairEvents() {
         const pairs = await this.getPairs();
         pairs.forEach((iPair) =>
             iPair.instance.on("Swap", (amountA, amountB) => {
@@ -191,14 +192,19 @@ export class SmartContractService {
                 this.swapped.next();
             })
         );
-        this.connectService.contractRouter_mod.on(
-            "AddLiquidity",
-            (sender, amount0In, amount1In, amount0Out, amount1Out, to) => {
-                console.log(
-                    `Added liquidity: sender ${sender}, amount0In ${amount0In}, amount1In ${amount1In}, amount0Out ${amount0Out}, amount1Out ${amount1Out}, to ${to}`
-                );
-                this.liquidityAdded.next();
-            }
-        );
+    }
+
+    public async subscribeRouterContractsEvents() {
+        this.connectService.contractRouter_mod
+            .connect(this.connectService.signer)
+            .on(
+                "AddLiquidity",
+                (sender, amount0In, amount1In, amount0Out, amount1Out, to) => {
+                    console.log(
+                        `Added liquidity: sender ${sender}, amount0In ${amount0In}, amount1In ${amount1In}, amount0Out ${amount0Out}, amount1Out ${amount1Out}, to ${to}`
+                    );
+                    this.liquidityAdded.next();
+                }
+            );
     }
 }

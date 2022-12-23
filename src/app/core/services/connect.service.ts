@@ -40,10 +40,15 @@ export class ConnectService {
         return this.walletConnected.asObservable();
     }
 
+    private mintRevertedPeriod = new Subject<string>();
+    public MintRevertedPeriod$(): Observable<string> {
+        return this.mintRevertedPeriod.asObservable();
+    }
+
     public getTokenContracts() {
         return this.tokenContracts;
     }
-    public async fetchSmartContract() {
+    public async fetchSmartContracts() {
         const network = this.network.nameShort as keyof typeof Potato.address;
 
         // Potato
@@ -103,15 +108,19 @@ export class ConnectService {
         this.subscribeTransferTokensEvents();
     }
 
-    ngOnInit() {
-        this.isConnected = this.provider !== undefined;
-        console.log(`Is connected? ${this.isConnected.toString()}`);
-    }
+    ngOnInit() {}
     public provider: ethers.providers.Web3Provider;
     public signer: ethers.providers.JsonRpcSigner;
     public isConnected: boolean = false;
 
-    constructor() {}
+    constructor() {
+        this.connetcEthers();
+        this.fetchSmartContracts();
+        this.isConnected = this.provider !== undefined;
+        console.log(`Is connected? ${this.isConnected.toString()}`);
+        this.subscribeMintRevertedPeriodEvent();
+        this.subscribeTransferTokensEvents();
+    }
     public async connetcEthers() {
         this.isConnected = this.provider !== undefined;
         this.provider = new ethers.providers.Web3Provider(
@@ -119,7 +128,6 @@ export class ConnectService {
         );
         this.signer = this.provider.getSigner();
         console.log(`Is connected? ${this.isConnected}`);
-        this.fetchSmartContract();
         this.walletConnected.next();
     }
 
@@ -129,10 +137,24 @@ export class ConnectService {
 
     public async subscribeTransferTokensEvents() {
         this.tokenContracts.forEach((iContract) =>
-            iContract.instance.on("Transfer", (from, to, amount) => {
-                console.log(`Transfeed ${amount} tokens from ${from} to ${to}`);
-                this.tokenMinted.next(iContract);
-            })
+            iContract.instance
+                .connect(this.signer)
+                .on("Transfer", (from, to, amount) => {
+                    console.log(
+                        `Transfeed ${amount} tokens from ${from} to ${to}`
+                    );
+                    this.tokenMinted.next(iContract);
+                })
+        );
+    }
+    public async subscribeMintRevertedPeriodEvent() {
+        this.contractApple.on(
+            "MintRevertedPeriod",
+            (timePassedSeconds, mintLimitPeriodSeconds) => {
+                const err = `Passed only ${timePassedSeconds} seconds, required to wait ${mintLimitPeriodSeconds} seconds`;
+                console.log(err);
+                this.mintRevertedPeriod.next(err);
+            }
         );
     }
 }

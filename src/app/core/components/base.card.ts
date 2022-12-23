@@ -33,6 +33,12 @@ export abstract class BaseCard implements OnInit, OnDestroy {
                 this.refresh();
             })
         );
+
+        this.subscriptions.push(
+            this.connectService.MintRevertedPeriod$().subscribe(() => {
+                console.log(``);
+            })
+        );
     }
     ngOnDestroy(): void {
         throw new Error("Method not implemented.");

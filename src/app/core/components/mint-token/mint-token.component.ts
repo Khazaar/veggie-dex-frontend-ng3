@@ -22,7 +22,7 @@ export class MintTokenComponent extends BaseCard {
     @Output() selectedTokenChange: EventEmitter<ISmartContract> =
         new EventEmitter<ISmartContract>();
     @Input() selectedToken: ISmartContract = Apple;
-    @Input() selectedAmount: number = 1000000;
+    @Input() selectedAmount: number = 100000;
 
     constructor(
         smartContractService: SmartContractService,
@@ -46,11 +46,14 @@ export class MintTokenComponent extends BaseCard {
         console.log(
             `Going to mint token ${this.selectedToken.nameLong} in , amount ${this.selectedAmount}`
         );
-
-        await this.smartContractService.mintTokens(
-            this.selectedToken.instance,
-            BigInt(this.selectedAmount)
-        );
+        if (this.selectedAmount > 1000000) {
+            console.log(`Please, mint less then 1000000 tokens`);
+        } else {
+            await this.smartContractService.mintTokens(
+                this.selectedToken.instance,
+                BigInt(this.selectedAmount)
+            );
+        }
     }
     public refresh(): void {}
 }
