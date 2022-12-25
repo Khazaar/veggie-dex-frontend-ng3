@@ -24,11 +24,12 @@ export class SelectNetworkComponent {
     @Output() selectedNetworkChange: EventEmitter<INetwork> =
         new EventEmitter<INetwork>();
     public networks: INetwork[] = [Hardhat, BSC, Testnet];
-    @Input() selectedNetwork: INetwork = Hardhat;
+    @Input() selectedNetwork: INetwork = BSC;
 
-    public onSelectedTokenChange(network: INetwork): void {
+    public onSelectedNetworkChange(network: INetwork): void {
         this.selectedNetwork = network;
         this.selectedNetworkChange.emit(this.selectedNetwork);
+        this.connectService.setNetwork(network);
         //console.log(`Selected token is ${this.selectedToken.name}`);
     }
     constructor(

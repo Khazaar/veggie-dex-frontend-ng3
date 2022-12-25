@@ -1,3 +1,4 @@
+import { BSC } from "./../smart-contracts/networks";
 import { Injectable } from "@angular/core";
 import { ethers } from "ethers";
 import { Observable } from "rxjs";
@@ -43,6 +44,36 @@ export class ConnectService {
     private mintRevertedPeriod = new Subject<string>();
     public MintRevertedPeriod$(): Observable<string> {
         return this.mintRevertedPeriod.asObservable();
+    }
+
+    ngOnInit() {}
+    public provider: ethers.providers.Web3Provider;
+    public signer: ethers.providers.JsonRpcSigner;
+    public isConnected: boolean = false;
+
+    constructor() {
+        this.connetcEthers();
+        this.fetchSmartContracts();
+        this.isConnected = this.provider !== undefined;
+        console.log(`Is connected? ${this.isConnected.toString()}`);
+        this.subscribeMintRevertedPeriodEvent();
+        this.subscribeTransferTokensEvents();
+        this.setNetwork(BSC);
+    }
+
+    public setNetwork(network: INetwork) {
+        this.network = network;
+        this.fetchSmartContracts();
+    }
+
+    public async connetcEthers() {
+        this.isConnected = this.provider !== undefined;
+        this.provider = new ethers.providers.Web3Provider(
+            (window as any).ethereum
+        );
+        this.signer = this.provider.getSigner();
+        console.log(`Is connected? ${this.isConnected}`);
+        this.walletConnected.next();
     }
 
     public getTokenContracts() {
@@ -107,30 +138,6 @@ export class ConnectService {
         this.tokenContracts = [Apple, Potato, Tomato, LSR];
         this.subscribeTransferTokensEvents();
     }
-
-    ngOnInit() {}
-    public provider: ethers.providers.Web3Provider;
-    public signer: ethers.providers.JsonRpcSigner;
-    public isConnected: boolean = false;
-
-    constructor() {
-        this.connetcEthers();
-        this.fetchSmartContracts();
-        this.isConnected = this.provider !== undefined;
-        console.log(`Is connected? ${this.isConnected.toString()}`);
-        this.subscribeMintRevertedPeriodEvent();
-        this.subscribeTransferTokensEvents();
-    }
-    public async connetcEthers() {
-        this.isConnected = this.provider !== undefined;
-        this.provider = new ethers.providers.Web3Provider(
-            (window as any).ethereum
-        );
-        this.signer = this.provider.getSigner();
-        console.log(`Is connected? ${this.isConnected}`);
-        this.walletConnected.next();
-    }
-
     public async getSignerBalance() {
         return ethers.utils.formatEther(await this.signer.getBalance());
     }

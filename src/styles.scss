@@ -1,6 +1,5 @@
 @use "@angular/material" as mat;
 @use "@material/shape";
-@use "palette-helper";
 @import "@angular/material/theming";
 @include mat.core();
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
@@ -36,62 +35,76 @@ body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
     font-size: large;
-    background-color: rgba(123, 255, 47, 0.357);
+    background-color: black;
     padding: 0;
-    background-image: url("/assets/images/bg1.png");
     background-size: contain;
-    overflow: hidden;
+    overflow-x: hidden;
 }
+
+// .mat-app-background {
+//     background-color: black;
+// }
+
+// Cards
 mat-card {
     margin-bottom: 1rem;
-    padding: 1.2rem;
-    width: fit-content;
+    padding: 0.8rem;
+    // width: fit-content;
     --mdc-typography-headline6-font-size: 1.6rem;
     --mdc-typography-subtitle2-font-size: 1.2rem;
     --mdc-typography-body2-font-size: 1.2rem;
-
     --mdc-typography-body1-font-size: 1.2rem;
-    border: 2px solid rgb(255, 166, 0);
+    --mdc-typography-headline6-text-transform: uppercase;
+
+    min-width: $card-width-max;
+    width: $card-width-max;
 }
 
-mat-option {
-    background-color: white;
+.mdc-card {
+    --mdc-theme-surface: transparent;
 }
 
 mat-card-title {
     text-align: center;
     padding-bottom: 1rem;
     font-size: 2rem;
+    text-transform: uppercase;
+    color: #1aba00;
 }
 
 .mat-mdc-card {
     --mdc-shape-medium: 30px;
-    --mdc-elevated-card-container-color: #fce084e4;
-    --mdc-theme-surface: #fce084e4;
+    --mdc-elevated-card-container-color: transparent;
 }
 
-.mat-mdc-raised-button {
-    --mdc-shape-small: 20px;
+// Text transform
+mat-option {
+    //background-color: white;
+    text-transform: uppercase;
+}
+
+// Buttons
+
+.mdc-button {
+    --mdc-typography-button-font-size: 1.1rem;
+    --mdc-typography-button-text-transform: uppercase;
+
+    width: fit-content;
+}
+$button-color: $main-green-color;
+.mat-mdc-raised-button.mat-accent {
+    --mdc-protected-button-container-color: #1aba00;
 }
 
 .mat-mdc-form-field-infix {
     width: fit-content !important;
 }
 
-.mdc-button {
-    --mdc-typography-button-font-size: 1.1rem;
-
-    width: fit-content;
+.mat-mdc-raised-button {
+    --mdc-shape-small: 20px;
 }
 
-.mat-mdc-raised-button.mat-accent {
-    --mdc-protected-button-container-color: #efa963;
-}
-
-// .mat-mdc-dialog-container .mdc-dialog__surface {
-//     --mdc-shape-medium: 20px;
-// }
-
+// Forms
 .mat-mdc-form-field-flex {
     width: 7rem;
 }
@@ -101,14 +114,25 @@ mat-card-title {
 }
 
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
-    background-color: rgb(255, 192, 2);
+    background-color: whitesmoke;
+    --mdc-typography-body1-text-transform: uppercase;
 }
 
 .mdc-text-field--filled .mdc-line-ripple::after {
-    border-bottom-color: var(--mdc-theme-primary, #c86f21);
+    border-bottom-color: var(--mdc-theme-primary, $button-color);
 }
 
+.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
+    color: #1aba00;
+}
+
+.mat-mdc-form-field.mat-focused.mat-primary .mat-mdc-select-arrow {
+    color: #1aba00;
+}
+
+// Table
 .mat-table {
     border-radius: 8px;
+
     overflow: hidden !important;
 }

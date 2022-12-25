@@ -29,6 +29,7 @@ import { SelectNetworkComponent } from "./core/components/select-network/select-
 import { WhitepaperComponent } from "./core/components/_windows/whitepaper/whitepaper.component";
 import { MatDialogModule } from "@angular/material/dialog";
 import { ContactUsComponent } from "./core/components/_windows/contact-us/contact-us.component";
+import { VertMenuLayoutComponent } from "./core/components/_layouts/vert-menu-layout/vert-menu-layout.component";
 
 @NgModule({
     declarations: [
@@ -46,6 +47,7 @@ import { ContactUsComponent } from "./core/components/_windows/contact-us/contac
         SelectNetworkComponent,
         WhitepaperComponent,
         ContactUsComponent,
+        VertMenuLayoutComponent,
     ],
     imports: [
         BrowserModule,
@@ -67,7 +69,5 @@ import { ContactUsComponent } from "./core/components/_windows/contact-us/contac
     bootstrap: [AppComponent],
 })
 export class AppModule {
-    public refreshDex() {
-        
-    }
+    public refreshDex() {}
 }

@@ -1,28 +1,33 @@
-<div class="container">
-    <mat-form-field appearance="fill">
-        <mat-label>Select token</mat-label>
-        <mat-select
-            [(ngModel)]="selectedToken"
-            (valueChange)="onSelectedTokenChange($event)"
-        >
-            <mat-option *ngFor="let token of tokenContracts" [value]="token">
-                {{ token.nameLong }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    <form class="example-form">
+<div class="container-main">
+    <div ngClass="container-field">
         <mat-form-field appearance="fill">
-            <mat-label>Token amount</mat-label>
-            <input
-                matInput
-                [ngModelOptions]="{ standalone: true }"
-                [(ngModel)]="selectedAmount"
-                placeholder="1000"
-                value=""
-                (keyup)="onSelectedAmountChange()"
-            />
+            <mat-label>SELECT TOKEN</mat-label>
+            <mat-select
+                [(ngModel)]="selectedToken"
+                (valueChange)="onSelectedTokenChange($event)"
+            >
+                <mat-option
+                    *ngFor="let token of tokenContracts"
+                    [value]="token"
+                >
+                    {{ token.nameLong }}
+                </mat-option>
+            </mat-select>
         </mat-form-field>
-    </form>
+        <form class="example-form">
+            <mat-form-field appearance="fill">
+                <mat-label>AMOUNT</mat-label>
+                <input
+                    matInput
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="selectedAmount"
+                    placeholder="1000"
+                    value=""
+                    (keyup)="onSelectedAmountChange()"
+                />
+            </mat-form-field>
+        </form>
+    </div>
     <button class="item" mat-raised-button color="accent" (click)="clickMint()">
         Mint <mat-icon>all_inclusive</mat-icon>
     </button>

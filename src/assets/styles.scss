@@ -1,22 +1,20 @@
 $footer-height: 3rem;
-$header-height: 80px;
-$border-color: rgb(255, 166, 0);
-
-.bottom-margin {
-    // margin-bottom: 0rem;
-}
+$header-height: 4rem;
+$card-width-min: 10rem;
+$card-width-max: 22rem;
+$main-green-color: #1aba00;
 
 .top-margin {
     margin-top: 0.5rem;
 }
 
-.bg-color {
-}
-
-.make-gold {
-    background-color: gold;
-    border: 2px solid $border-color;
-
+.table-style {
     border-radius: 1.5rem;
     overflow: hidden !important;
+}
+
+.card-border {
+    border-width: 3px;
+    border-color: #1aba00;
+    border-style: solid;
 }

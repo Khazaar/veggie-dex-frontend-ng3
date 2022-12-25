@@ -24,8 +24,8 @@ export class AddLiquidityComponent {
     public tokenContracts: ISmartContract[] = [];
     @Input() selectedTokenA: ISmartContract = Apple;
     @Input() selectedTokenB: ISmartContract = Potato;
-    @Input() selectedAmountA: number = 500000;
-    @Input() selectedAmountB: number = 500000;
+    @Input() selectedAmountA: number = 5000;
+    @Input() selectedAmountB: number = 5000;
     public onSelectedAmountAChange(): void {
         this.selectedAmountChange.emit(this.selectedAmountA);
     }

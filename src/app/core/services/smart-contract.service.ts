@@ -1,3 +1,4 @@
+import { INetwork } from "./../smart-contracts/networks";
 import { EventEmitter, Injectable } from "@angular/core";
 import { ethers } from "ethers";
 import { min, Observable, Subject } from "rxjs";
@@ -29,6 +30,10 @@ export class SmartContractService {
 
     constructor(public connectService: ConnectService) {
         this.subscribeRouterContractsEvents();
+        this.updateSmatrContractServiceNetwork();
+    }
+
+    public updateSmatrContractServiceNetwork() {
         this.network = this.connectService.network
             .nameShort as keyof typeof Potato.address;
     }
@@ -59,6 +64,7 @@ export class SmartContractService {
         amountA: BigInt,
         amountB: BigInt
     ) {
+        this.updateSmatrContractServiceNetwork();
         await contractA.instance
             .connect(this.connectService.signer)
             .approve(
@@ -91,6 +97,7 @@ export class SmartContractService {
         amountA: BigInt,
         amountB: BigInt
     ) {
+        this.updateSmatrContractServiceNetwork();
         await contractA.instance
             .connect(this.connectService.signer)
             .approve(
@@ -122,7 +129,9 @@ export class SmartContractService {
             this.connectService
                 .getTokenContracts()
                 .forEach((contract: ISmartContract) => {
-                    if (contract.address[this.network] == address) {
+                    if (
+                        contract.address[this.network].toLowerCase() == address
+                    ) {
                         resolve(contract);
                         return;
                     }
@@ -131,6 +140,8 @@ export class SmartContractService {
         });
     }
     public async getPairs(): Promise<IPair[]> {
+        this.updateSmatrContractServiceNetwork();
+        //this.connectService.fetchSmartContracts();
         const nPairs =
             await this.connectService.contractFactory.allPairsLength();
         const tokenPairs: IPair[] = [];

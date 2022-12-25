@@ -2,7 +2,7 @@
     <mat-label>Network</mat-label>
     <mat-select
         [(ngModel)]="selectedNetwork"
-        (valueChange)="onSelectedTokenChange($event)"
+        (valueChange)="onSelectedNetworkChange($event)"
     >
         <mat-option *ngFor="let network of networks" [value]="network">
             {{ network.nameLong }}

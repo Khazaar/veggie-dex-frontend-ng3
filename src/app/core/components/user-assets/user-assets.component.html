@@ -1,5 +1,5 @@
 <div class="container">
-    <table mat-table [dataSource]="dataSource" [ngClass]="'make-gold'">
+    <table mat-table [dataSource]="dataSource" ngClass="table-style">
         <!-- Position Column -->
         <ng-container matColumnDef="position">
             <th mat-header-cell *matHeaderCellDef>No.</th>
@@ -20,8 +20,10 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
     <br />
-    <h4>ETH balance:</h4>
-    <h4 [innerHTML]="ETHBalance"></h4>
+    <div ngClass="text-balance">
+        <h4>ETH balance:</h4>
+        <h4 [innerHTML]="ETHBalance"></h4>
+    </div>
 </div>
 
 <!-- mat-elevation-z8 -->

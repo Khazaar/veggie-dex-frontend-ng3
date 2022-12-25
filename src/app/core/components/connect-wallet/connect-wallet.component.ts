@@ -20,7 +20,6 @@ export class ConnectWalletComponent {
     async clickConnect() {
         this.connectService.connetcEthers();
         this.signerAddress = await this.connectService.signer.getAddress();
-
         this.message = this.signerAddress;
         this.buttonText = "Wallet connected";
 
