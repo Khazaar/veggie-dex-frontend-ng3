@@ -32,7 +32,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     padding-top: 1rem;
-    height: calc(100vh - 1.4 * $header-height);
+    min-height: calc(100vh - 1.4 * $header-height);
     background-image: url("/assets/images/apple-bg.png");
     width: 100%;
     background-size: cover;
