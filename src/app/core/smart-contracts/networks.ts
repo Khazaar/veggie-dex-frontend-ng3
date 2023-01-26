@@ -18,3 +18,9 @@ export const Testnet: INetwork = {
     nameLong: "Etherium testnet",
     nativeToken: "Testnet ETH",
 };
+
+export const Goerli: INetwork = {
+    nameShort: "goerli",
+    nameLong: "Goerli",
+    nativeToken: "Goerli ETH",
+};

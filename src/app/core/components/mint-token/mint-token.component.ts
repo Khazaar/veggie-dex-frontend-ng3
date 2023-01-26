@@ -1,13 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { SmartContractService } from "../../services/smart-contract.service";
-import { ethers } from "ethers";
 import {
     ISmartContract,
     Tomato,
 } from "../../smart-contracts/smart-contract-data";
 import { Potato, Apple, LSR } from "../../smart-contracts/smart-contract-data";
 import { ConnectService } from "../../services/connect.service";
-import { UserAssetsComponent } from "../user-assets/user-assets.component";
 import { BaseCard } from "../base.card";
 // import { MDCTextField } from "@material/textfield";
 @Component({

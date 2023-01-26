@@ -3,6 +3,7 @@ import { BigNumber, ethers } from "ethers";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { ConnectService } from "../../services/connect.service";
 import { UserAssetsComponent } from "../user-assets/user-assets.component";
+import { SmartContractService } from "../../services/smart-contract.service";
 
 @Component({
     selector: "vd-connect-wallet",
@@ -12,13 +13,16 @@ import { UserAssetsComponent } from "../user-assets/user-assets.component";
 export class ConnectWalletComponent {
     constructor(
         public connectService: ConnectService,
-        public userAssetsComponent: UserAssetsComponent
+        public userAssetsComponent: UserAssetsComponent,
+        public smartContractService: SmartContractService
     ) {}
     public signerAddress: string;
     public message: string = "Please, connect your wallet";
     public buttonText: string = "Connect wallet";
     async clickConnect() {
-        this.connectService.connetcEthers();
+        await this.connectService.initConnectService();
+        await this.smartContractService.initSmartContractService();
+
         this.signerAddress = await this.connectService.signer.getAddress();
         this.message = this.signerAddress;
         this.buttonText = "Wallet connected";

@@ -1,6 +1,6 @@
 <div class="container-main">
-    <div ngClass="container-field">
-        <mat-form-field appearance="fill">
+    <div ngClass="container-fields">
+        <mat-form-field appearance="fill" ngClass="item-field">
             <mat-label>SELECT TOKEN</mat-label>
             <mat-select
                 [(ngModel)]="selectedToken"
@@ -15,7 +15,7 @@
             </mat-select>
         </mat-form-field>
         <form class="example-form">
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" ngClass="item-field">
                 <mat-label>AMOUNT</mat-label>
                 <input
                     matInput

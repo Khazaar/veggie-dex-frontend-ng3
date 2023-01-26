@@ -28,8 +28,10 @@ export class SmartContractService {
         return this.liquidityAdded.asObservable();
     }
 
-    constructor(public connectService: ConnectService) {
-        this.subscribeRouterContractsEvents();
+    constructor(public connectService: ConnectService) {}
+
+    public async initSmartContractService() {
+        await this.subscribeRouterContractsEvents();
         this.updateSmatrContractServiceNetwork();
     }
 

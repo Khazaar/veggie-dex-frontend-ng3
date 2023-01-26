@@ -1,19 +1,21 @@
-<div ngClass="bg-image">
+<div>
     <div class="header-wapper">
         <vd-header></vd-header>
     </div>
-    <div ngClass="vert-menu-wrapper">
-        <vd-vert-menu-layout></vd-vert-menu-layout>
-    </div>
+    <div class="global-wrapper">
+        <div class="content-wrapper">
+            <div class="item">
+                <vd-dex-layout></vd-dex-layout>
+            </div>
+            <div class="item">
+                <vd-user-layout></vd-user-layout>
+            </div>
 
-    <div class="content-wrapper">
-        <div style="flex-grow: 1; flex-shrink: 1">
-            <vd-dex-layout></vd-dex-layout>
+            <!-- <div style="width: 2rem"></div> -->
         </div>
-        <div style="flex-grow: 1; flex-shrink: 1">
-            <vd-user-layout></vd-user-layout>
+        <div ngClass="vert-menu-wrapper">
+            <vd-vert-menu-layout></vd-vert-menu-layout>
         </div>
-        <div style="width: 2rem"></div>
     </div>
 </div>
 

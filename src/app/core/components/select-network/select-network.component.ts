@@ -3,6 +3,7 @@ import {
     Hardhat,
     BSC,
     Testnet,
+    Goerli,
 } from "./../../smart-contracts/networks";
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { ConnectService } from "../../services/connect.service";
@@ -23,8 +24,8 @@ import { UserAssetsComponent } from "../user-assets/user-assets.component";
 export class SelectNetworkComponent {
     @Output() selectedNetworkChange: EventEmitter<INetwork> =
         new EventEmitter<INetwork>();
-    public networks: INetwork[] = [Hardhat, BSC, Testnet];
-    @Input() selectedNetwork: INetwork = BSC;
+    public networks: INetwork[] = [Hardhat, BSC, Goerli];
+    @Input() selectedNetwork: INetwork = Goerli;
 
     public onSelectedNetworkChange(network: INetwork): void {
         this.selectedNetwork = network;

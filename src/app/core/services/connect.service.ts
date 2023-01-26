@@ -29,7 +29,7 @@ export class ConnectService {
     public contractPair: ethers.Contract;
     public contractRouter_mod: ethers.Contract;
     public tokenContracts: ISmartContract[] = [];
-    public network: INetwork = Hardhat;
+    public network: INetwork; // = Hardhat;
 
     private tokenMinted = new Subject<ISmartContract>();
     public TokenMinted$(): Observable<ISmartContract> {
@@ -46,19 +46,20 @@ export class ConnectService {
         return this.mintRevertedPeriod.asObservable();
     }
 
-    ngOnInit() {}
     public provider: ethers.providers.Web3Provider;
     public signer: ethers.providers.JsonRpcSigner;
     public isConnected: boolean = false;
 
-    constructor() {
-        this.connetcEthers();
-        this.fetchSmartContracts();
+    constructor() {}
+
+    public async initConnectService() {
+        await this.connectEthers();
+        await this.fetchSmartContracts();
         this.isConnected = this.provider !== undefined;
         console.log(`Is connected? ${this.isConnected.toString()}`);
-        this.subscribeMintRevertedPeriodEvent();
-        this.subscribeTransferTokensEvents();
-        this.setNetwork(BSC);
+        await this.subscribeMintRevertedPeriodEvent();
+        await this.subscribeTransferTokensEvents();
+        //this.setNetwork(BSC);
     }
 
     public setNetwork(network: INetwork) {
@@ -66,13 +67,24 @@ export class ConnectService {
         this.fetchSmartContracts();
     }
 
-    public async connetcEthers() {
-        this.isConnected = this.provider !== undefined;
+    public async connectEthers() {
+        await (window as any).ethereum.request({
+            method: "eth_requestAccounts",
+        });
         this.provider = new ethers.providers.Web3Provider(
             (window as any).ethereum
         );
+        // Prompt user for account connections
+        //await this.provider.send("eth_requestAccounts", []);
+        // const signer = this.provider.getSigner();
+        // console.log("Account:", await signer.getAddress());
+
+        // this.provider = new ethers.providers.Web3Provider(
+        //     (window as any).ethereum
+        // );
         this.signer = this.provider.getSigner();
         console.log(`Is connected? ${this.isConnected}`);
+        console.log("Account:", await this.signer.getAddress());
         this.walletConnected.next();
     }
 
@@ -136,7 +148,7 @@ export class ConnectService {
         );
         Router_mod.instance = this.contractLSR;
         this.tokenContracts = [Apple, Potato, Tomato, LSR];
-        this.subscribeTransferTokensEvents();
+        await this.subscribeTransferTokensEvents();
     }
     public async getSignerBalance() {
         return ethers.utils.formatEther(await this.signer.getBalance());

@@ -2,6 +2,7 @@ $footer-height: 3rem;
 $header-height: 4rem;
 $card-width-min: 10rem;
 $card-width-max: 22rem;
+$input-field-width-min: 10rem;
 $main-green-color: #1aba00;
 
 .top-margin {
@@ -17,4 +18,17 @@ $main-green-color: #1aba00;
     border-width: 3px;
     border-color: #1aba00;
     border-style: solid;
+}
+
+.container-fields {
+    display: flex;
+    flex-direction: row;
+    //width: 300px;
+}
+
+.item-field {
+    justify-content: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 50%;
 }

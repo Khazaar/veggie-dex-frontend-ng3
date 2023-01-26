@@ -97,7 +97,7 @@ $button-color: $main-green-color;
 }
 
 .mat-mdc-form-field-infix {
-    width: fit-content !important;
+    width: $input-field-width-min;
 }
 
 .mat-mdc-raised-button {
@@ -105,12 +105,16 @@ $button-color: $main-green-color;
 }
 
 // Forms
+
+.mat-mdc-form-field {
+    width: $input-field-width-min;
+}
 .mat-mdc-form-field-flex {
-    width: 7rem;
+    width: $input-field-width-min;
 }
 
 .mdc-text-field__input {
-    width: 7rem !important;
+    width: $input-field-width-min;
 }
 
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
