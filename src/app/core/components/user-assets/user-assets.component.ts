@@ -40,30 +40,37 @@ export class UserAssetsComponent extends BaseCard {
     //public potatoBalance: BigInt;
     public async onClickShow() {}
     public async refresh() {
-        const potatoBalance: BigInt =
-            await this.smartContractService.getTokensBalance(
-                this.connectService.contractPotato
-            );
-        const tomatoBalance: BigInt =
-            await this.smartContractService.getTokensBalance(
-                this.connectService.contractTomato
-            );
+        try {
+            const potatoBalance: BigInt =
+                await this.smartContractService.getTokensBalance(
+                    this.connectService.contractPotato
+                );
+            const tomatoBalance: BigInt =
+                await this.smartContractService.getTokensBalance(
+                    this.connectService.contractTomato
+                );
 
-        const appleBalance: BigInt =
-            await this.smartContractService.getTokensBalance(
-                this.connectService.contractApple
-            );
+            const appleBalance: BigInt =
+                await this.smartContractService.getTokensBalance(
+                    this.connectService.contractApple
+                );
 
-        const lsrBalance: BigInt =
-            await this.smartContractService.getTokensBalance(
-                this.connectService.contractLSR
-            );
-        ASSET_DATA[0].amount = appleBalance;
-        ASSET_DATA[1].amount = potatoBalance;
-        ASSET_DATA[2].amount = tomatoBalance;
-        ASSET_DATA[3].amount = lsrBalance;
+            const lsrBalance: BigInt =
+                await this.smartContractService.getTokensBalance(
+                    this.connectService.contractLSR
+                );
+            ASSET_DATA[0].amount = appleBalance;
+            ASSET_DATA[1].amount = potatoBalance;
+            ASSET_DATA[2].amount = tomatoBalance;
+            ASSET_DATA[3].amount = lsrBalance;
 
-        this.ETHBalance = await this.smartContractService.getSignerBalance();
-        console.log("User assets refreshed!");
+            this.ETHBalance =
+                await this.smartContractService.getSignerBalance();
+            console.log("User assets refreshed!");
+        } catch (error) {
+            console.log(
+                `Error in user-assets.component: ${(error as Error).message}`
+            );
+        }
     }
 }

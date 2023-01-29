@@ -42,7 +42,7 @@ export class MintTokenComponent extends BaseCard {
 
     public async clickMint() {
         console.log(
-            `Going to mint token ${this.selectedToken.nameLong} in , amount ${this.selectedAmount}`
+            `Going to mint token ${this.selectedToken.nameLong} in amount: ${this.selectedAmount}`
         );
         if (this.selectedAmount > 1000000) {
             console.log(`Please, mint less then 1000000 tokens`);

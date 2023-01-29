@@ -31,8 +31,14 @@ export class SmartContractService {
     constructor(public connectService: ConnectService) {}
 
     public async initSmartContractService() {
-        await this.subscribeRouterContractsEvents();
-        this.updateSmatrContractServiceNetwork();
+        try {
+            await this.subscribeRouterContractsEvents();
+            this.updateSmatrContractServiceNetwork();
+        } catch (error) {
+            console.log(
+                `Error in initSmartContractService: ${(error as Error).message}`
+            );
+        }
     }
 
     public updateSmatrContractServiceNetwork() {
@@ -79,6 +85,18 @@ export class SmartContractService {
                 this.connectService.contractRouter_mod.address,
                 amountB.toString()
             );
+        console.log(
+            `Allowance A set to: ${await contractA.instance.allowance(
+                this.connectService.signer.getAddress(),
+                this.connectService.contractRouter_mod.address
+            )}`
+        );
+        console.log(
+            `Allowance B set to: ${await contractB.instance.allowance(
+                this.connectService.signer.getAddress(),
+                this.connectService.contractRouter_mod.address
+            )}`
+        );
         await this.connectService.contractRouter_mod
             .connect(this.connectService.signer)
             .addLiquidity(
@@ -91,7 +109,7 @@ export class SmartContractService {
                 this.connectService.signer.getAddress(),
                 216604939048
             );
-        this.subscribePairEvents();
+        await this.subscribePairEvents();
     }
     public async swap(
         contractA: ISmartContract,

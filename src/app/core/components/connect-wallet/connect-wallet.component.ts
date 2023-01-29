@@ -19,14 +19,24 @@ export class ConnectWalletComponent {
     public signerAddress: string;
     public message: string = "Please, connect your wallet";
     public buttonText: string = "Connect wallet";
+
+    ngOnInit() {
+        if (this.connectService.isConnected) {
+            this.buttonText = "Wallet connected";
+        }
+    }
+
     async clickConnect() {
-        await this.connectService.initConnectService();
-        await this.smartContractService.initSmartContractService();
+        try {
+            await this.connectService.initConnectService();
+            await this.smartContractService.initSmartContractService();
 
-        this.signerAddress = await this.connectService.signer.getAddress();
-        this.message = this.signerAddress;
-        this.buttonText = "Wallet connected";
-
-        await this.userAssetsComponent.onClickShow();
+            this.signerAddress = await this.connectService.signer.getAddress();
+            this.message = this.signerAddress;
+            await this.userAssetsComponent.onClickShow();
+            this.buttonText = "Wallet connected";
+        } catch (error) {
+            console.log(`Can't connect wallet: ${(error as Error).message}`);
+        }
     }
 }

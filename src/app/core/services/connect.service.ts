@@ -1,4 +1,4 @@
-import { BSC } from "./../smart-contracts/networks";
+import { BSC, Goerli } from "./../smart-contracts/networks";
 import { Injectable } from "@angular/core";
 import { ethers } from "ethers";
 import { Observable } from "rxjs";
@@ -29,7 +29,7 @@ export class ConnectService {
     public contractPair: ethers.Contract;
     public contractRouter_mod: ethers.Contract;
     public tokenContracts: ISmartContract[] = [];
-    public network: INetwork; // = Hardhat;
+    public network: INetwork = Goerli; // = Hardhat;
 
     private tokenMinted = new Subject<ISmartContract>();
     public TokenMinted$(): Observable<ISmartContract> {
@@ -50,15 +50,25 @@ export class ConnectService {
     public signer: ethers.providers.JsonRpcSigner;
     public isConnected: boolean = false;
 
-    constructor() {}
+    constructor() {
+        this.network = Goerli;
+    }
 
     public async initConnectService() {
-        await this.connectEthers();
-        await this.fetchSmartContracts();
-        this.isConnected = this.provider !== undefined;
-        console.log(`Is connected? ${this.isConnected.toString()}`);
-        await this.subscribeMintRevertedPeriodEvent();
-        await this.subscribeTransferTokensEvents();
+        try {
+            await this.connectEthers();
+            await this.fetchSmartContracts();
+            //this.isConnected = this.provider !== undefined;
+            console.log(`Is connected? ${this.isConnected.toString()}`);
+            await this.subscribeMintRevertedPeriodEvent();
+            await this.subscribeTransferTokensEvents();
+
+            this.isConnected = true;
+        } catch (error) {
+            console.log(
+                `Error in initConnectService: ${(error as Error).message}`
+            );
+        }
         //this.setNetwork(BSC);
     }
 
@@ -92,62 +102,69 @@ export class ConnectService {
         return this.tokenContracts;
     }
     public async fetchSmartContracts() {
-        const network = this.network.nameShort as keyof typeof Potato.address;
+        try {
+            const network = this.network
+                .nameShort as keyof typeof Potato.address;
 
-        // Potato
-        this.contractPotato = new ethers.Contract(
-            Potato.address[network],
-            Potato.abi as any,
-            this.signer
-        );
-        Potato.instance = this.contractPotato;
+            // Potato
+            this.contractPotato = new ethers.Contract(
+                Potato.address[network],
+                Potato.abi as any,
+                this.signer
+            );
+            Potato.instance = this.contractPotato;
 
-        // Tomato
-        this.contractTomato = new ethers.Contract(
-            Tomato.address[network],
-            Tomato.abi as any,
-            this.signer
-        );
-        Tomato.instance = this.contractTomato;
+            // Tomato
+            this.contractTomato = new ethers.Contract(
+                Tomato.address[network],
+                Tomato.abi as any,
+                this.signer
+            );
+            Tomato.instance = this.contractTomato;
 
-        // Apple
-        this.contractApple = new ethers.Contract(
-            Apple.address[network],
-            Apple.abi as any,
-            this.signer
-        );
-        Apple.instance = this.contractApple;
-        // LSR
-        this.contractLSR = new ethers.Contract(
-            LSR.address[network],
-            LSR.abi as any,
-            this.signer
-        );
-        LSR.instance = this.contractLSR;
-        // Factory
-        this.contractFactory = new ethers.Contract(
-            Factory.address[network],
-            Factory.abi as any,
-            this.signer
-        );
-        Factory.instance = this.contractPotato;
+            // Apple
+            this.contractApple = new ethers.Contract(
+                Apple.address[network],
+                Apple.abi as any,
+                this.signer
+            );
+            Apple.instance = this.contractApple;
+            // LSR
+            this.contractLSR = new ethers.Contract(
+                LSR.address[network],
+                LSR.abi as any,
+                this.signer
+            );
+            LSR.instance = this.contractLSR;
+            // Factory
+            this.contractFactory = new ethers.Contract(
+                Factory.address[network],
+                Factory.abi as any,
+                this.signer
+            );
+            Factory.instance = this.contractPotato;
 
-        // Pair
-        this.contractPair = new ethers.Contract(
-            Pair.address[network],
-            Pair.abi as any,
-            this.signer
-        );
-        Pair.instance = this.contractPair;
+            // Pair
+            this.contractPair = new ethers.Contract(
+                Pair.address[network],
+                Pair.abi as any,
+                this.signer
+            );
+            Pair.instance = this.contractPair;
 
-        // Router
-        this.contractRouter_mod = new ethers.Contract(
-            Router_mod.address[network],
-            Router_mod.abi as any,
-            this.signer
-        );
-        Router_mod.instance = this.contractLSR;
-        this.tokenContracts = [Apple, Potato, Tomato, LSR];
+            // Router
+            this.contractRouter_mod = new ethers.Contract(
+                Router_mod.address[network],
+                Router_mod.abi as any,
+                this.signer
+            );
+            Router_mod.instance = this.contractLSR;
+            this.tokenContracts = [Apple, Potato, Tomato, LSR];
+        } catch (error) {
+            console.log(
+                `Error in fetchSmartContracts: ${(error as Error).message}`
+            );
+        }
         await this.subscribeTransferTokensEvents();
     }
     public async getSignerBalance() {

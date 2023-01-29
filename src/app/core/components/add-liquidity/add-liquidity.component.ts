@@ -53,7 +53,7 @@ export class AddLiquidityComponent {
     }
 
     public async clickAddLiquidity() {
-        this.smartContractService.addLiquidity(
+        await this.smartContractService.addLiquidity(
             this.selectedTokenA,
             this.selectedTokenB,
             BigInt(this.selectedAmountA),
