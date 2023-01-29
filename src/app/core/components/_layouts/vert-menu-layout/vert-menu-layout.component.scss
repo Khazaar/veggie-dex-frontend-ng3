@@ -1,14 +1,12 @@
 @use "@material/card";
-
 @import "../../../../../assets/styles.scss";
-
 @include card.core-styles;
 
 .item {
     align-content: center;
-    margin-left: 2rem;
-    margin-right: 1rem;
-    margin-top: 2rem;
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+    margin-top: 1rem;
     //height: $footer-height;
 }
 .container {
@@ -22,4 +20,22 @@
 .material-icons {
     font-size: 3rem;
     color: white;
+}
+
+@media only screen and (max-width: 450px) {
+    .material-icons {
+        font-size: 2rem;
+        color: white;
+    }
+    .container {
+        flex-direction: row;
+        align-items: center;
+    }
+    .item {
+        margin-top: 0.2rem;
+        //height: $footer-height;
+    }
+}
+
+@media only screen and (max-width: 410px) {
 }

@@ -3,10 +3,9 @@
 
 @include card.core-styles;
 
-// .connect {
-//     display: flex;
-//     justify-content: flex-end;
-// }
+.image-wrapper {
+    width: 25rem;
+}
 
 .margin-left {
     margin-left: 1rem;
@@ -40,6 +39,24 @@ mat-card {
     margin-bottom: 0;
 }
 
-.image-wrapper {
-    width: 50px;
+@media only screen and (max-width: 850px) {
+    .image-wrapper {
+        width: 20rem;
+    }
+}
+
+@media only screen and (max-width: 770px) {
+    .image-wrapper {
+        width: 15rem;
+    }
+}
+
+@media only screen and (max-width: 688px) {
+    .image-wrapper {
+        width: 12rem;
+    }
+    .container-horiz {
+        display: flex;
+        flex-direction: column;
+    }
 }

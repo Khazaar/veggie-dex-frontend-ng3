@@ -41,10 +41,6 @@ body {
     overflow-x: hidden;
 }
 
-// .mat-app-background {
-//     background-color: black;
-// }
-
 // Cards
 mat-card {
     margin-bottom: 1rem;
@@ -55,10 +51,20 @@ mat-card {
     --mdc-typography-body2-font-size: 1.2rem;
     --mdc-typography-body1-font-size: 1.2rem;
     --mdc-typography-headline6-text-transform: uppercase;
-
-    min-width: $card-width-max;
     width: $card-width-max;
 }
+
+// @media only screen and (max-width: 440px) {
+//     mat-card {
+//         width: 18rem;
+//     }
+// }
+
+// @media only screen and (max-width: 410px) {
+//     mat-card {
+//         width: 16rem;
+//     }
+// }
 
 .mdc-card {
     --mdc-theme-surface: transparent;
