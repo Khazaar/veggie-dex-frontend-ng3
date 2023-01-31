@@ -17,6 +17,7 @@ import { ConnectService } from "./connect.service";
 export class SmartContractService {
     public tokenPairs: IPair[] = [];
     public network: keyof typeof Potato.address;
+    public gasLimit = 200000;
 
     private liquidityAdded = new Subject<void>();
     public LiquidityAdded$(): Observable<void> {
@@ -73,18 +74,22 @@ export class SmartContractService {
         amountB: BigInt
     ) {
         this.updateSmatrContractServiceNetwork();
-        await contractA.instance
+        let tx = await contractA.instance
             .connect(this.connectService.signer)
             .approve(
                 this.connectService.contractRouter_mod.address,
-                amountA.toString()
+                amountA.toString(),
+                { gasLimit: this.gasLimit }
             );
-        await contractB.instance
+        await tx.wait(1);
+        tx = await contractB.instance
             .connect(this.connectService.signer)
             .approve(
                 this.connectService.contractRouter_mod.address,
-                amountB.toString()
+                amountB.toString(),
+                { gasLimit: this.gasLimit }
             );
+        await tx.wait(1);
         console.log(
             `Allowance A set to: ${await contractA.instance.allowance(
                 this.connectService.signer.getAddress(),
@@ -97,18 +102,20 @@ export class SmartContractService {
                 this.connectService.contractRouter_mod.address
             )}`
         );
-        await this.connectService.contractRouter_mod
+        tx = await this.connectService.contractRouter_mod
             .connect(this.connectService.signer)
             .addLiquidity(
                 contractA.address[this.network],
                 contractB.address[this.network],
                 amountA.toString(),
                 amountB.toString(),
-                amountA.toString(),
-                amountB.toString(),
+                1,
+                1,
                 this.connectService.signer.getAddress(),
-                216604939048
+                216604939048,
+                { gasLimit: this.gasLimit }
             );
+        await tx.wait(1);
         await this.subscribePairEvents();
     }
     public async swap(
@@ -118,12 +125,20 @@ export class SmartContractService {
         amountB: BigInt
     ) {
         this.updateSmatrContractServiceNetwork();
-        await contractA.instance
+        let tx = await contractA.instance
             .connect(this.connectService.signer)
             .approve(
                 this.connectService.contractRouter_mod.address,
-                amountA.toString()
+                amountA.toString(),
+                { gasLimit: this.gasLimit }
             );
+        await tx.wait(1);
+        console.log(
+            `Allowance A set to: ${await contractA.instance.allowance(
+                this.connectService.signer.getAddress(),
+                this.connectService.contractRouter_mod.address
+            )}`
+        );
         // await contractB.instance
         //     .connect(this.connectService.signer)
         //     .approve(
@@ -131,7 +146,7 @@ export class SmartContractService {
         //         amountB.toString()
         //     );
 
-        await this.connectService.contractRouter_mod
+        tx = await this.connectService.contractRouter_mod
             .connect(this.connectService.signer)
             .swapExactTokensForTokens(
                 amountA.toString(),
@@ -141,8 +156,11 @@ export class SmartContractService {
                     contractB.address[this.network],
                 ],
                 this.connectService.signer.getAddress(),
-                99999999999999
+                99999999999999,
+                { gasLimit: this.gasLimit }
             );
+        await tx.wait(1);
+        await this.subscribePairEvents();
     }
     public getIContractByAddress(address: string): Promise<ISmartContract> {
         return new Promise((resolve, reject) => {

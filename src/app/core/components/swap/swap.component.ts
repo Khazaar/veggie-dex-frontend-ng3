@@ -53,7 +53,7 @@ export class SwapComponent extends BaseCard {
     }
 
     public async clickSwap() {
-        this.smartContractService.swap(
+        await this.smartContractService.swap(
             this.selectedTokenA,
             this.selectedTokenB,
             BigInt(this.selectedAmountA),
