@@ -10,6 +10,8 @@ All available liquidity pools with corresponding reserves are shown in **"Liquid
 
 Smart contracts of this DEX could be found at corresponding [GitHub repository](https://github.com/Khazaar/pancake-router) with Hardhat project. You can use this project to connect this Web3 app to **Hardhat Local** network.
 
+Compiled app could is deployed at AWS [here](https://master.dbnd0fh0jij.amplifyapp.com/)
+
 This project was developed by Yoav Khazar - **Full-stack Web3 developer, Ph.D.**
 Contacts:
 E-mail: eeguar@gmail.com
