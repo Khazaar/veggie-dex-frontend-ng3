@@ -17,7 +17,7 @@ import { ConnectService } from "./connect.service";
 export class SmartContractService {
     public tokenPairs: IPair[] = [];
     public network: keyof typeof Potato.address;
-    public gasLimit = 200000;
+    public gasLimit = 50000;
 
     private liquidityAdded = new Subject<void>();
     public LiquidityAdded$(): Observable<void> {
@@ -112,11 +112,10 @@ export class SmartContractService {
                 1,
                 1,
                 this.connectService.signer.getAddress(),
-                216604939048,
-                { gasLimit: this.gasLimit }
+                216604939048
             );
         await tx.wait(1);
-        await this.subscribePairEvents();
+        await this.subscribeRouterContractsEvents();
     }
     public async swap(
         contractA: ISmartContract,
@@ -129,8 +128,7 @@ export class SmartContractService {
             .connect(this.connectService.signer)
             .approve(
                 this.connectService.contractRouter_mod.address,
-                amountA.toString(),
-                { gasLimit: this.gasLimit }
+                amountA.toString()
             );
         await tx.wait(1);
         console.log(
@@ -156,8 +154,7 @@ export class SmartContractService {
                     contractB.address[this.network],
                 ],
                 this.connectService.signer.getAddress(),
-                99999999999999,
-                { gasLimit: this.gasLimit }
+                99999999999999
             );
         await tx.wait(1);
         await this.subscribePairEvents();

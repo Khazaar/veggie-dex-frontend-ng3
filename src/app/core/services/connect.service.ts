@@ -145,12 +145,12 @@ export class ConnectService {
             Factory.instance = this.contractPotato;
 
             // Pair
-            this.contractPair = new ethers.Contract(
-                Pair.address[network],
-                Pair.abi as any,
-                this.signer
-            );
-            Pair.instance = this.contractPair;
+            // this.contractPair = new ethers.Contract(
+            //     Pair.address[network],
+            //     Pair.abi as any,
+            //     this.signer
+            // );
+            // Pair.instance = this.contractPair;
 
             // Router
             this.contractRouter_mod = new ethers.Contract(
