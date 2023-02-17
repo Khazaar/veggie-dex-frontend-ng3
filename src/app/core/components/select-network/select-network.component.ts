@@ -25,7 +25,7 @@ export class SelectNetworkComponent {
     @Output() selectedNetworkChange: EventEmitter<INetwork> =
         new EventEmitter<INetwork>();
     public networks: INetwork[] = [Hardhat, BSC, Goerli];
-    @Input() selectedNetwork: INetwork = Goerli;
+    @Input() selectedNetwork: INetwork = this.connectService.defaultNetwork;
 
     public onSelectedNetworkChange(network: INetwork): void {
         this.selectedNetwork = network;

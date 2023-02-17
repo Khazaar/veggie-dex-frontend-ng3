@@ -29,73 +29,66 @@ export class ConnectService {
     public contractPair: ethers.Contract;
     public contractRouter_mod: ethers.Contract;
     public tokenContracts: ISmartContract[] = [];
-    public network: INetwork = Goerli; // = Hardhat;
-
-    private tokenMinted = new Subject<ISmartContract>();
-    public TokenMinted$(): Observable<ISmartContract> {
-        return this.tokenMinted.asObservable();
-    }
-
-    private walletConnected = new Subject<void>();
-    public walletConnected$(): Observable<void> {
-        return this.walletConnected.asObservable();
-    }
-
-    private mintRevertedPeriod = new Subject<string>();
-    public MintRevertedPeriod$(): Observable<string> {
-        return this.mintRevertedPeriod.asObservable();
-    }
+    public network: INetwork;
+    public defaultNetwork = Hardhat;
+    public hasAdminRole = false;
+    public hasOwnerRole = false;
+    public tokenMinted = new Subject<ISmartContract>();
 
     public provider: ethers.providers.Web3Provider;
     public signer: ethers.providers.JsonRpcSigner;
     public isConnected: boolean = false;
 
     constructor() {
-        this.network = Goerli;
+        this.network = Hardhat;
+    }
+    private walletConnected = new Subject<void>();
+    public walletConnected$(): Observable<void> {
+        return this.walletConnected.asObservable();
     }
 
     public async initConnectService() {
         try {
-            await this.connectEthers();
+            await (window as any).ethereum.request({
+                method: "eth_requestAccounts",
+            });
+            this.provider = new ethers.providers.Web3Provider(
+                (window as any).ethereum
+            );
+            this.signer = this.provider.getSigner();
             await this.fetchSmartContracts();
-            //this.isConnected = this.provider !== undefined;
-            console.log(`Is connected? ${this.isConnected.toString()}`);
-            await this.subscribeMintRevertedPeriodEvent();
-            await this.subscribeTransferTokensEvents();
+            console.log(`Is connected? ${this.isConnected}`);
+            console.log("Account:", await this.signer.getAddress());
+            if (
+                (await this.signer.getAddress()) ==
+                (await Router_mod.instance.getAdminAddress())
+            ) {
+                this.hasAdminRole = true;
+                console.log("Admin detected...");
+            } else {
+                this.hasAdminRole = false;
+            }
 
-            this.isConnected = true;
+            if (
+                (await this.signer.getAddress()) ==
+                (await Router_mod.instance.getOwnerAddress())
+            ) {
+                this.hasOwnerRole = true;
+                console.log("Owner detected...");
+            } else {
+                this.hasOwnerRole = false;
+            }
+            this.walletConnected.next();
         } catch (error) {
             console.log(
                 `Error in initConnectService: ${(error as Error).message}`
             );
         }
-        //this.setNetwork(BSC);
     }
 
     public setNetwork(network: INetwork) {
         this.network = network;
         this.fetchSmartContracts();
-    }
-
-    public async connectEthers() {
-        await (window as any).ethereum.request({
-            method: "eth_requestAccounts",
-        });
-        this.provider = new ethers.providers.Web3Provider(
-            (window as any).ethereum
-        );
-        // Prompt user for account connections
-        //await this.provider.send("eth_requestAccounts", []);
-        // const signer = this.provider.getSigner();
-        // console.log("Account:", await signer.getAddress());
-
-        // this.provider = new ethers.providers.Web3Provider(
-        //     (window as any).ethereum
-        // );
-        this.signer = this.provider.getSigner();
-        console.log(`Is connected? ${this.isConnected}`);
-        console.log("Account:", await this.signer.getAddress());
-        this.walletConnected.next();
     }
 
     public getTokenContracts() {
@@ -142,55 +135,22 @@ export class ConnectService {
                 Factory.abi as any,
                 this.signer
             );
-            Factory.instance = this.contractPotato;
+            Factory.instance = this.contractFactory;
 
-            // Pair
-            // this.contractPair = new ethers.Contract(
-            //     Pair.address[network],
-            //     Pair.abi as any,
-            //     this.signer
-            // );
-            // Pair.instance = this.contractPair;
-
-            // Router
             this.contractRouter_mod = new ethers.Contract(
                 Router_mod.address[network],
                 Router_mod.abi as any,
                 this.signer
             );
-            Router_mod.instance = this.contractLSR;
+            Router_mod.instance = this.contractRouter_mod;
             this.tokenContracts = [Apple, Potato, Tomato, LSR];
         } catch (error) {
             console.log(
                 `Error in fetchSmartContracts: ${(error as Error).message}`
             );
         }
-        await this.subscribeTransferTokensEvents();
     }
     public async getSignerBalance() {
         return ethers.utils.formatEther(await this.signer.getBalance());
-    }
-
-    public async subscribeTransferTokensEvents() {
-        this.tokenContracts.forEach((iContract) =>
-            iContract.instance
-                .connect(this.signer)
-                .on("Transfer", (from, to, amount) => {
-                    console.log(
-                        `Transfeed ${amount} tokens from ${from} to ${to}`
-                    );
-                    this.tokenMinted.next(iContract);
-                })
-        );
-    }
-    public async subscribeMintRevertedPeriodEvent() {
-        this.contractApple.on(
-            "MintRevertedPeriod",
-            (timePassedSeconds, mintLimitPeriodSeconds) => {
-                const err = `Passed only ${timePassedSeconds} seconds, required to wait ${mintLimitPeriodSeconds} seconds`;
-                console.log(err);
-                this.mintRevertedPeriod.next(err);
-            }
-        );
     }
 }

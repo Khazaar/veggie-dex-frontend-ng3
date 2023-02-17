@@ -12,7 +12,7 @@ export abstract class BaseCard implements OnInit, OnDestroy {
     ) {}
     ngOnInit(): void {
         this.subscriptions.push(
-            this.connectService.TokenMinted$().subscribe(() => {
+            this.smartContractService.TokenMinted$().subscribe(() => {
                 this.refresh();
             })
         );
@@ -35,7 +35,7 @@ export abstract class BaseCard implements OnInit, OnDestroy {
         );
 
         this.subscriptions.push(
-            this.connectService.MintRevertedPeriod$().subscribe(() => {
+            this.smartContractService.MintRevertedPeriod$().subscribe(() => {
                 console.log(``);
             })
         );

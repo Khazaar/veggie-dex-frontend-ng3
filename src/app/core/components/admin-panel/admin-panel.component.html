@@ -1,0 +1,20 @@
+<div class="container-main">
+    <div ngClass="container-fields">
+        <form class="example-form">
+            <mat-form-field appearance="fill" ngClass="item-field">
+                <mat-label>Swap fee</mat-label>
+                <input
+                    matInput
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="swapFee"
+                    placeholder="100"
+                    value=""
+                    (keyup)="onSwapFeeChange()"
+                />
+            </mat-form-field>
+        </form>
+    </div>
+    <button class="item" mat-raised-button color="accent" (click)="clickSet()">
+        Set <mat-icon>all_inclusive</mat-icon>
+    </button>
+</div>

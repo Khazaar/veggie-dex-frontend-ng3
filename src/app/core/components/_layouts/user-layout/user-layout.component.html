@@ -7,4 +7,9 @@
         <mat-card-title>User assets</mat-card-title>
         <vd-user-assets></vd-user-assets>
     </mat-card>
+
+    <mat-card *ngIf="hasAdminRole" class="card-border">
+        <mat-card-title>Admin Panel</mat-card-title>
+        <vd-admin-panel></vd-admin-panel>
+    </mat-card>
 </div>

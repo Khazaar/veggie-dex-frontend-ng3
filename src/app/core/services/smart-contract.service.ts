@@ -26,7 +26,16 @@ export class SmartContractService {
 
     private swapped = new Subject<void>();
     public Swapped$(): Observable<void> {
-        return this.liquidityAdded.asObservable();
+        return this.swapped.asObservable();
+    }
+    private tokenMinted = new Subject<ISmartContract>();
+    public TokenMinted$(): Observable<ISmartContract> {
+        return this.tokenMinted.asObservable();
+    }
+
+    private mintRevertedPeriod = new Subject<string>();
+    public MintRevertedPeriod$(): Observable<string> {
+        return this.mintRevertedPeriod.asObservable();
     }
 
     constructor(public connectService: ConnectService) {}
@@ -34,6 +43,9 @@ export class SmartContractService {
     public async initSmartContractService() {
         try {
             await this.subscribeRouterContractsEvents();
+            await this.subscribeMintRevertedPeriodEvent();
+            await this.subscribeTransferTokensEvents();
+            await this.subscribeTransferTokensEvents();
             this.updateSmatrContractServiceNetwork();
         } catch (error) {
             console.log(
@@ -137,12 +149,6 @@ export class SmartContractService {
                 this.connectService.contractRouter_mod.address
             )}`
         );
-        // await contractB.instance
-        //     .connect(this.connectService.signer)
-        //     .approve(
-        //         this.connectService.contractRouter_mod.address,
-        //         amountB.toString()
-        //     );
 
         tx = await this.connectService.contractRouter_mod
             .connect(this.connectService.signer)
@@ -214,11 +220,6 @@ export class SmartContractService {
                     reserve0: reserve0,
                     reserve1: reserve1,
                 };
-                // console.log(
-                //     `Token 0 :${pair.token0.nameShort}, token 1 ${pair.token1.nameShort}`
-                // );
-
-                //const pair: PancakePair = await new PancakePair__factory(owner).attach(pairAddress);
                 tokenPairs.push(pair);
             } catch (error) {
                 console.log(error);
@@ -230,17 +231,19 @@ export class SmartContractService {
 
     public async subscribePairEvents() {
         const pairs = await this.getPairs();
-        pairs.forEach((iPair) =>
+        pairs.forEach((iPair) => {
+            iPair.instance.removeAllListeners();
             iPair.instance.on("Swap", (amountA, amountB) => {
                 console.log(
                     `Added liquidity to ${iPair.name}: amoint A ${amountA}, amountB ${amountB}`
                 );
                 this.swapped.next();
-            })
-        );
+            });
+        });
     }
 
     public async subscribeRouterContractsEvents() {
+        this.connectService.contractRouter_mod.removeAllListeners();
         this.connectService.contractRouter_mod
             .connect(this.connectService.signer)
             .on(
@@ -252,5 +255,30 @@ export class SmartContractService {
                     this.liquidityAdded.next();
                 }
             );
+    }
+    public async subscribeTransferTokensEvents() {
+        this.connectService.tokenContracts.forEach((iContract) => {
+            iContract.instance.removeAllListeners();
+            iContract.instance
+                .connect(this.connectService.signer)
+                .on("Transfer", (from, to, amount) => {
+                    console.log(
+                        `Transfeed ${amount} tokens from ${from} to ${to}`
+                    );
+                    this.tokenMinted.next(iContract);
+                });
+        });
+    }
+
+    //!!! FIX only for apple
+    public async subscribeMintRevertedPeriodEvent() {
+        this.connectService.contractApple.on(
+            "MintRevertedPeriod",
+            (timePassedSeconds, mintLimitPeriodSeconds) => {
+                const err = `Passed only ${timePassedSeconds} seconds, required to wait ${mintLimitPeriodSeconds} seconds`;
+                console.log(err);
+                this.mintRevertedPeriod.next(err);
+            }
+        );
     }
 }
