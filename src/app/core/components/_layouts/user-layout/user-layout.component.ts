@@ -10,8 +10,8 @@ import { BaseCard } from "../../base.card";
     styleUrls: ["./user-layout.component.scss"],
 })
 export class UserLayoutComponent extends BaseCard {
-    public hasAdminRole = false;
-    public hasOwnerRole = false;
+    public hasAdminRole: Boolean;
+    public hasOwnerRole: Boolean;
     constructor(
         smartContractService: SmartContractService,
         connectService: ConnectService

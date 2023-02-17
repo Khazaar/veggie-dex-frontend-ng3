@@ -33,7 +33,6 @@ export class ConnectWalletComponent {
 
             this.signerAddress = await this.connectService.signer.getAddress();
             this.message = this.signerAddress;
-            await this.userAssetsComponent.onClickShow();
             this.buttonText = "Wallet connected";
         } catch (error) {
             console.log(`Can't connect wallet: ${(error as Error).message}`);

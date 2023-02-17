@@ -37,8 +37,6 @@ export class UserAssetsComponent extends BaseCard {
         super(connectService, martContractService);
     }
 
-    //public potatoBalance: BigInt;
-    public async onClickShow() {}
     public async refresh() {
         try {
             const potatoBalance: BigInt =
