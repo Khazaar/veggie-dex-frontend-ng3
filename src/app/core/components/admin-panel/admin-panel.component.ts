@@ -2,8 +2,17 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { ConnectService } from "../../services/connect.service";
 import { SmartContractService } from "../../services/smart-contract.service";
 import { BaseCard } from "../base.card";
-import { UserAssetsComponent } from "../user-assets/user-assets.component";
+import {
+    Asset,
+    UserAssetsComponent,
+} from "../user-assets/user-assets.component";
 
+let ASSET_DATA: Asset[] = [
+    { position: 2, name: "Apple", amount: BigInt(0) },
+    { position: 3, name: "Potato", amount: BigInt(0) },
+    { position: 3, name: "Tomato", amount: BigInt(0) },
+    { position: 4, name: "LSR", amount: BigInt(0) },
+];
 @Component({
     selector: "vd-admin-panel",
     templateUrl: "./admin-panel.component.html",
@@ -11,11 +20,19 @@ import { UserAssetsComponent } from "../user-assets/user-assets.component";
 })
 export class AdminPanelComponent extends BaseCard {
     [x: string]: any;
-    @Input() swapFee: number;
+    public displayedColumns: string[] = ["name", "amount"];
+    public dataSource = ASSET_DATA;
+    @Input() swapFee: number = 10;
+    @Input() minLSRBalance: number = 100;
     @Output() swapFeeChange: EventEmitter<number> = new EventEmitter<number>();
+    @Output() minLSRBalanceFeeChange: EventEmitter<number> =
+        new EventEmitter<number>();
 
     public onSwapFeeChange(): void {
         this.swapFeeChange.emit(this.swapFee);
+    }
+    public onMinLSRBalanceChange(): void {
+        this.minLSRBalanceFeeChange.emit(this.swapFee);
     }
 
     constructor(
@@ -29,17 +46,53 @@ export class AdminPanelComponent extends BaseCard {
         try {
             this.swapFee =
                 await this.connectService.contractRouter_mod.getSwapFee();
+
+            const potatoBalance: BigInt =
+                await this.connectService.contractPotato.balanceOf(
+                    this.connectService.contractRouter_mod
+                );
+            const tomatoBalance: BigInt =
+                await this.connectService.contractTomato.balanceOf(
+                    this.connectService.contractRouter_mod
+                );
+
+            const appleBalance: BigInt =
+                await this.connectService.contractApple.balanceOf(
+                    this.connectService.contractRouter_mod
+                );
+
+            const lsrBalance: BigInt =
+                await this.connectService.contractLSR.balanceOf(
+                    this.connectService.contractRouter_mod
+                );
+            ASSET_DATA[0].amount = appleBalance;
+            ASSET_DATA[1].amount = potatoBalance;
+            ASSET_DATA[2].amount = tomatoBalance;
+            ASSET_DATA[3].amount = lsrBalance;
         } catch (error) {
             console.log(error);
         }
     }
 
     public async clickSet() {
-        console.log(`Going to set fee to ${this.swapFee}`);
+        console.log(
+            `Going to set fee to ${this.swapFee}, LSR Min balance to avoin fee to ${this.minLSRBalance}`
+        );
         try {
             await this.connectService.contractRouter_mod.setSwapFee(
                 this.swapFee.toString()
             );
+            await this.connectService.contractRouter_mod.setLsrMinBalance(
+                this.minLSRBalance.toString()
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    public async clickWithdrawFees() {
+        console.log(`Going to withdraw fees`);
+        try {
         } catch (error) {
             console.log(error);
         }
