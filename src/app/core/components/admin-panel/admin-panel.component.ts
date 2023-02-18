@@ -47,23 +47,27 @@ export class AdminPanelComponent extends BaseCard {
             this.swapFee =
                 await this.connectService.contractRouter_mod.getSwapFee();
 
+            this.minLSRBalance =
+                await this.connectService.contractRouter_mod.getLsrMinBalance();
+            this.connectService.tokenContracts.forEach((iContract) => {});
+
             const potatoBalance: BigInt =
                 await this.connectService.contractPotato.balanceOf(
-                    this.connectService.contractRouter_mod
+                    this.connectService.contractRouter_mod.address
                 );
             const tomatoBalance: BigInt =
                 await this.connectService.contractTomato.balanceOf(
-                    this.connectService.contractRouter_mod
+                    this.connectService.contractRouter_mod.address
                 );
 
             const appleBalance: BigInt =
                 await this.connectService.contractApple.balanceOf(
-                    this.connectService.contractRouter_mod
+                    this.connectService.contractRouter_mod.address
                 );
 
             const lsrBalance: BigInt =
                 await this.connectService.contractLSR.balanceOf(
-                    this.connectService.contractRouter_mod
+                    this.connectService.contractRouter_mod.address
                 );
             ASSET_DATA[0].amount = appleBalance;
             ASSET_DATA[1].amount = potatoBalance;
@@ -76,7 +80,7 @@ export class AdminPanelComponent extends BaseCard {
 
     public async clickSet() {
         console.log(
-            `Going to set fee to ${this.swapFee}, LSR Min balance to avoin fee to ${this.minLSRBalance}`
+            `Going to set fee to ${this.swapFee}, LSR Min balance to avoid fee to ${this.minLSRBalance}`
         );
         try {
             await this.connectService.contractRouter_mod.setSwapFee(
@@ -93,6 +97,17 @@ export class AdminPanelComponent extends BaseCard {
     public async clickWithdrawFees() {
         console.log(`Going to withdraw fees`);
         try {
+            this.connectService.tokenContracts.forEach(async (iContract) => {
+                if (
+                    (await iContract.instance.balanceOf(
+                        this.connectService.contractRouter_mod.address
+                    )) > 0
+                ) {
+                    await this.connectService.contractRouter_mod.withdrawFees(
+                        iContract.instance.address
+                    );
+                }
+            });
         } catch (error) {
             console.log(error);
         }

@@ -33,8 +33,8 @@ export class SwapComponent extends BaseCard {
     public tokenContracts: ISmartContract[] = [];
     @Input() selectedTokenA: ISmartContract = Apple;
     @Input() selectedTokenB: ISmartContract = Potato;
-    @Input() selectedAmountA: number = 100000;
-    @Input() selectedAmountB: number = 100000;
+    @Input() selectedAmountA: number = 1000;
+    @Input() selectedAmountB: number = 1000;
     public onSelectedAmountAChange(): void {
         this.selectedAmountChange.emit(this.selectedAmountA);
     }
