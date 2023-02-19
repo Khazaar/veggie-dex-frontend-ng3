@@ -7,13 +7,18 @@ import {
 import { Potato, Apple, LSR } from "../../smart-contracts/smart-contract-data";
 import { ConnectService } from "../../services/connect.service";
 import { BaseCard } from "../base.card";
-// import { MDCTextField } from "@material/textfield";
+import { FormControl, Validators } from "@angular/forms";
+
 @Component({
     selector: "vd-mint-token",
     templateUrl: "./mint-token.component.html",
     styleUrls: ["./mint-token.component.scss"],
 })
 export class MintTokenComponent extends BaseCard {
+    numberFormControl = new FormControl("", [
+        Validators.min(0),
+        Validators.max(100000),
+    ]);
     public tokenContracts: ISmartContract[] = [];
     @Output() selectedAmountChange: EventEmitter<number> =
         new EventEmitter<number>();
@@ -41,16 +46,18 @@ export class MintTokenComponent extends BaseCard {
     }
 
     public async clickMint() {
-        console.log(
-            `Going to mint token ${this.selectedToken.nameLong} in amount: ${this.selectedAmount}`
-        );
-        if (this.selectedAmount > 1000000) {
-            console.log(`Please, mint less then 1000000 tokens`);
-        } else {
-            await this.smartContractService.mintTokens(
-                this.selectedToken.instance,
-                BigInt(this.selectedAmount)
+        if (this.selectedAmount > 0) {
+            console.log(
+                `Going to mint token ${this.selectedToken.nameLong} in amount: ${this.selectedAmount}`
             );
+            if (this.selectedAmount > 1000000) {
+                console.log(`Please, mint less then 1000000 tokens`);
+            } else {
+                await this.smartContractService.mintTokens(
+                    this.selectedToken.instance,
+                    BigInt(this.selectedAmount)
+                );
+            }
         }
     }
     public refresh(): void {}

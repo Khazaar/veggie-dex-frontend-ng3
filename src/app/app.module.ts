@@ -18,7 +18,7 @@ import { DexLayoutComponent } from "./core/components/_layouts/dex-layout/dex-la
 import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from "@angular/material/table";
 import { AlertModule } from "@coreui/angular";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
 import { AddLiquidityComponent } from "./core/components/add-liquidity/add-liquidity.component";
 import { SwapComponent } from "./core/components/swap/swap.component";
@@ -30,7 +30,7 @@ import { WhitepaperComponent } from "./core/components/_windows/whitepaper/white
 import { MatDialogModule } from "@angular/material/dialog";
 import { ContactUsComponent } from "./core/components/_windows/contact-us/contact-us.component";
 import { VertMenuLayoutComponent } from "./core/components/_layouts/vert-menu-layout/vert-menu-layout.component";
-import { AdminPanelComponent } from './core/components/admin-panel/admin-panel.component';
+import { AdminPanelComponent } from "./core/components/admin-panel/admin-panel.component";
 
 @NgModule({
     declarations: [
@@ -66,10 +66,9 @@ import { AdminPanelComponent } from './core/components/admin-panel/admin-panel.c
         MatIconModule,
         AmplifyAuthenticatorModule,
         MatDialogModule,
+        ReactiveFormsModule,
     ],
     providers: [],
     bootstrap: [AppComponent],
 })
-export class AppModule {
-    public refreshDex() {}
-}
+export class AppModule {}

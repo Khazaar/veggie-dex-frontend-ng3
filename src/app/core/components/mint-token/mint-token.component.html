@@ -19,12 +19,18 @@
                 <mat-label>AMOUNT</mat-label>
                 <input
                     matInput
-                    [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="selectedAmount"
                     placeholder="1000"
                     value=""
                     (keyup)="onSelectedAmountChange()"
+                    [formControl]="numberFormControl"
                 />
+                <mat-error *ngIf="numberFormControl.hasError('min')">
+                    The value is lower than the minimum
+                </mat-error>
+                <mat-error *ngIf="numberFormControl.hasError('max')">
+                    The value is greater than the maximum
+                </mat-error>
             </mat-form-field>
         </form>
     </div>
