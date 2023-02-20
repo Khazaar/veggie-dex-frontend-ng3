@@ -1,0 +1,24 @@
+@import "../../../../assets/styles.scss";
+
+.text {
+    color: #1aba00;
+    margin: 1rem;
+}
+
+.table-style {
+    margin-bottom: 1rem;
+}
+
+.container-main {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.item-field {
+    width: 100%;
+}
+
+.button-style {
+    margin: 1rem;
+}

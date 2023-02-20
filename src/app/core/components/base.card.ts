@@ -36,7 +36,17 @@ export abstract class BaseCard implements OnInit, OnDestroy {
 
         this.subscriptions.push(
             this.smartContractService.MintRevertedPeriod$().subscribe(() => {
-                console.log(``);
+                this.refresh();
+            })
+        );
+        this.subscriptions.push(
+            this.smartContractService.AdminGranted$().subscribe(async () => {
+                await this.refresh();
+            })
+        );
+        this.subscriptions.push(
+            this.smartContractService.AdminRevoked$().subscribe(async () => {
+                await this.refresh();
             })
         );
     }

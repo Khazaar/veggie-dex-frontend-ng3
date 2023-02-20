@@ -140,6 +140,10 @@ $button-color: $main-green-color;
     color: #1aba00;
 }
 
+mat-form-field-wrapper {
+    margin-bottom: -1.25em;
+}
+
 // Table
 .mat-table {
     border-radius: 8px;

@@ -1,4 +1,3 @@
-import { BSC, Goerli } from "./../smart-contracts/networks";
 import { Injectable } from "@angular/core";
 import { ethers } from "ethers";
 import { Observable } from "rxjs";
@@ -11,9 +10,6 @@ import {
     ISmartContract,
     Factory,
     Router_mod,
-    Pair,
-    IPair,
-    IAddress,
     Tomato,
 } from "../smart-contracts/smart-contract-data";
 
@@ -21,6 +17,7 @@ import {
     providedIn: "root",
 })
 export class ConnectService {
+    public ADMIN_ROLE = ethers.utils.solidityKeccak256(["string"], ["ADMIN"]);
     public contractPotato: ethers.Contract;
     public contractApple: ethers.Contract;
     public contractTomato: ethers.Contract;
@@ -60,8 +57,9 @@ export class ConnectService {
             console.log(`Is connected? ${this.isConnected}`);
             console.log("Account:", await this.signer.getAddress());
             if (
-                (await this.signer.getAddress()) ==
-                (await Router_mod.instance.getAdminAddress())
+                (await this.getRouterAdmins()).includes(
+                    await this.signer.getAddress()
+                )
             ) {
                 this.hasAdminRole = true;
                 console.log("Admin detected...");
@@ -152,5 +150,27 @@ export class ConnectService {
     }
     public async getSignerBalance() {
         return ethers.utils.formatEther(await this.signer.getBalance());
+    }
+
+    public async getRouterAdmins() {
+        const admins: string[] = [];
+        try {
+            let adminCount = (
+                await this.contractRouter_mod.getRoleMemberCount(
+                    this.ADMIN_ROLE
+                )
+            ).toNumber();
+            for (let i = 0; i < adminCount; ++i) {
+                admins.push(
+                    await this.contractRouter_mod.getRoleMember(
+                        this.ADMIN_ROLE,
+                        i
+                    )
+                );
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        return admins;
     }
 }

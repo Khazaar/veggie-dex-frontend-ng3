@@ -1,0 +1,45 @@
+<div class="container-main">
+    <div ngClass="container-fields">
+        <form class="example-form">
+            <mat-form-field appearance="fill" ngClass="mat-form-field-dropdown">
+                <mat-label>Add admin address</mat-label>
+                <input
+                    matInput
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="adminRoleAddress"
+                    placeholder=""
+                    value=""
+                    (keyup)="onAdminRoleGrantChange()"
+                />
+            </mat-form-field>
+        </form>
+    </div>
+    <button
+        ngClass="button-style"
+        mat-raised-button
+        color="accent"
+        (click)="clickAddAdminAddress()"
+    >
+        Grant Admin <mat-icon>done</mat-icon>
+    </button>
+
+    <mat-form-field appearance="fill" ngClass="mat-form-field-dropdown">
+        <mat-label>SELECT ADMIN TO REVOKE</mat-label>
+        <mat-select
+            [(ngModel)]="adminToRevoke"
+            (valueChange)="onAdminToRevokeChange($event)"
+        >
+            <mat-option *ngFor="let adm of admins" [value]="adm">
+                {{ adm }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button
+        ngClass="button-style"
+        mat-raised-button
+        color="accent"
+        (click)="clickRevokeAdminAddress()"
+    >
+        Revoke Admin<mat-icon>not_interested</mat-icon>
+    </button>
+</div>

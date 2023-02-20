@@ -2,10 +2,7 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { ConnectService } from "../../services/connect.service";
 import { SmartContractService } from "../../services/smart-contract.service";
 import { BaseCard } from "../base.card";
-import {
-    Asset,
-    UserAssetsComponent,
-} from "../user-assets/user-assets.component";
+import { Asset } from "../user-assets/user-assets.component";
 
 let ASSET_DATA: Asset[] = [
     { position: 2, name: "Apple", amount: BigInt(0) },
@@ -24,6 +21,7 @@ export class AdminPanelComponent extends BaseCard {
     public dataSource = ASSET_DATA;
     @Input() swapFee: number = 10;
     @Input() minLSRBalance: number = 100;
+
     @Output() swapFeeChange: EventEmitter<number> = new EventEmitter<number>();
     @Output() minLSRBalanceFeeChange: EventEmitter<number> =
         new EventEmitter<number>();
@@ -96,20 +94,6 @@ export class AdminPanelComponent extends BaseCard {
 
     public async clickWithdrawFees() {
         console.log(`Going to withdraw fees`);
-        try {
-            this.connectService.tokenContracts.forEach(async (iContract) => {
-                if (
-                    (await iContract.instance.balanceOf(
-                        this.connectService.contractRouter_mod.address
-                    )) > 0
-                ) {
-                    await this.connectService.contractRouter_mod.withdrawFees(
-                        iContract.instance.address
-                    );
-                }
-            });
-        } catch (error) {
-            console.log(error);
-        }
+        await this.smartContractService.withdrawFees();
     }
 }

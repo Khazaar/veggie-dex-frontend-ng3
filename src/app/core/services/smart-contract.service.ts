@@ -1,4 +1,3 @@
-import { INetwork } from "./../smart-contracts/networks";
 import { EventEmitter, Injectable } from "@angular/core";
 import { ethers } from "ethers";
 import { min, Observable, Subject } from "rxjs";
@@ -38,6 +37,16 @@ export class SmartContractService {
         return this.mintRevertedPeriod.asObservable();
     }
 
+    private adminGranted = new Subject<string>();
+    public AdminGranted$(): Observable<string> {
+        return this.adminGranted.asObservable();
+    }
+
+    private adminRevoked = new Subject<string>();
+    public AdminRevoked$(): Observable<string> {
+        return this.adminRevoked.asObservable();
+    }
+
     constructor(public connectService: ConnectService) {}
 
     public async initSmartContractService() {
@@ -46,6 +55,7 @@ export class SmartContractService {
             await this.subscribeMintRevertedPeriodEvent();
             await this.subscribeTransferTokensEvents();
             await this.subscribeTransferTokensEvents();
+            await this.subscribeAdminEvents();
             this.updateSmatrContractServiceNetwork();
         } catch (error) {
             console.log(
@@ -229,6 +239,55 @@ export class SmartContractService {
         return tokenPairs;
     }
 
+    public async addAdminAddress(adminRoleAddress: string) {
+        try {
+            if (ethers.utils.isAddress(adminRoleAddress)) {
+                let tx =
+                    await this.connectService.contractRouter_mod.addAdminAddress(
+                        adminRoleAddress
+                    );
+                tx.wait(1);
+            } else {
+                throw new Error("Invalid address");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    public async revokeAdminAddress(adminRoleAddress: string) {
+        try {
+            if (ethers.utils.isAddress(adminRoleAddress)) {
+                let tx =
+                    await this.connectService.contractRouter_mod.revokeAdminAddress(
+                        adminRoleAddress
+                    );
+                tx.wait(1);
+            } else {
+                throw new Error("Invalid address");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    public async withdrawFees() {
+        try {
+            this.connectService.tokenContracts.forEach(async (iContract) => {
+                if (
+                    (await iContract.instance.balanceOf(
+                        this.connectService.contractRouter_mod.address
+                    )) > 0
+                ) {
+                    await this.connectService.contractRouter_mod.withdrawFees(
+                        iContract.instance.address
+                    );
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     public async subscribePairEvents() {
         const pairs = await this.getPairs();
         pairs.forEach((iPair) => {
@@ -280,5 +339,21 @@ export class SmartContractService {
                 this.mintRevertedPeriod.next(err);
             }
         );
+    }
+
+    public async subscribeAdminEvents() {
+        this.connectService.contractRouter_mod
+            .connect(this.connectService.signer)
+            .on("RoleGranted", (role, account) => {
+                console.log(`Role ${role} granted to ${account}`);
+                this.adminGranted.next(account);
+            });
+
+        this.connectService.contractRouter_mod
+            .connect(this.connectService.signer)
+            .on("RoleRevoked", (role, account) => {
+                console.log(`Role ${role} revoked from ${account}`);
+                this.adminRevoked.next(account);
+            });
     }
 }

@@ -31,6 +31,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { ContactUsComponent } from "./core/components/_windows/contact-us/contact-us.component";
 import { VertMenuLayoutComponent } from "./core/components/_layouts/vert-menu-layout/vert-menu-layout.component";
 import { AdminPanelComponent } from "./core/components/admin-panel/admin-panel.component";
+import { OwnerPanelComponent } from './core/components/owner-panel/owner-panel.component';
 
 @NgModule({
     declarations: [
@@ -50,6 +51,7 @@ import { AdminPanelComponent } from "./core/components/admin-panel/admin-panel.c
         ContactUsComponent,
         VertMenuLayoutComponent,
         AdminPanelComponent,
+        OwnerPanelComponent,
     ],
     imports: [
         BrowserModule,

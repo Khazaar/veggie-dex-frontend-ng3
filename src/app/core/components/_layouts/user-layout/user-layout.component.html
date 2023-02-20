@@ -12,4 +12,8 @@
         <mat-card-title>Admin Panel</mat-card-title>
         <vd-admin-panel></vd-admin-panel>
     </mat-card>
+    <mat-card *ngIf="hasOwnerRole == true" class="card-border">
+        <mat-card-title>Owner Panel</mat-card-title>
+        <vd-owner-panel></vd-owner-panel>
+    </mat-card>
 </div>
